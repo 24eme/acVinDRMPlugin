@@ -167,7 +167,7 @@ class drmActions extends drmGeneriqueActions {
         
         $this->drmCsvEdi = new DRMCsvEdi($this->drm);
         $this->drmCsvEdi->importCSV($this->csvFile);        
-         $this->redirect('drm_validation', $this->drm);
+        $this->redirect('drm_validation', $this->drm);
         
     }
 
@@ -203,7 +203,7 @@ class drmActions extends drmGeneriqueActions {
         if ($isTeledeclarationMode) {
             $this->redirect('drm_choix_produit', $drm);
         } else {
-            $this->redirect('drm_edition', $drm);
+            $this->redirect($this->generateUrl('drm_edition', $drm).'#col_saisies_cont');
         }
     }
 
@@ -243,7 +243,7 @@ class drmActions extends drmGeneriqueActions {
         $this->etablissement = $this->getRoute()->getEtablissement();
         $this->societe = $this->etablissement->getSociete();
         if ($this->etablissement->famille != EtablissementFamilles::FAMILLE_PRODUCTEUR)
-            throw new sfException("L'établissement sélectionné ne déclare pas de DRM");
+             throw new sfException("L'établissement sélectionné ne déclare pas de DRM");
 
         $this->campagne = $request->getParameter('campagne');
         if (!$this->campagne) {

@@ -2,13 +2,17 @@
 
 class drmComponents extends sfComponents {
 
-     public function executeFormEtablissementChoice() {
+    public function executeFormEtablissementChoice() {
         if (!$this->identifiant) {
             $this->identifiant = null;
         }
+        $autofocus = array();
+        if ($this->autofocus) {
+            $autofocus = array('autofocus' => 'autofocus');
+        }
 
         if (!$this->form) {
-            $this->form = new DRMEtablissementChoiceForm('INTERPRO-declaration', array('identifiant' => $this->identifiant));
+            $this->form = new DRMEtablissementChoiceForm('INTERPRO-declaration', array('identifiant' => $this->identifiant), $autofocus);
         }
     }
 
@@ -25,7 +29,7 @@ class drmComponents extends sfComponents {
     }
 
     public function executeMonEspaceDrm() {
-        if (!$this->calendrier) 
+        if (!$this->calendrier)
             $this->calendrier = new DRMCalendrier($this->etablissement, $this->campagne, $this->isTeledeclarationMode);
         $this->lastDrmToCompleteAndToStart = $this->calendrier->getLastDrmToCompleteAndToStart();
         $this->hasNoPopupCreation = (isset($this->accueil_drm) && $this->accueil_drm);
@@ -118,8 +122,9 @@ class drmComponents extends sfComponents {
     }
 
     public function executeCalendrier() {
-        if (!$this->calendrier) 
+        if (!$this->calendrier)
             $this->calendrier = new DRMCalendrier($this->etablissement, $this->campagne, $this->isTeledeclarationMode);
+            $this->lastDrmToCompleteAndToStart = $this->calendrier->getLastDrmToCompleteAndToStart();
         if ($this->isTeledeclarationMode) {
             $this->creationDrmsForms = $this->getCreationDrmsForms();
         }
@@ -132,17 +137,21 @@ class drmComponents extends sfComponents {
         foreach ($this->calendrier->getPeriodes() as $periode) {
             $drm = $this->calendrier->getDRM($periode);
             if ($drm && $drm->isValidee()) {
-                foreach ($drm->getProduits() as $produit) {
+                foreach ($drm->getProduitsDetails() as $produit) {
                     $d = new stdClass();
                     $d->version = $drm->version;
                     $d->periode = $periode;
                     $d->mois = ucfirst($this->calendrier->getPeriodeLibelle($periode));
                     $d->produit_hash = $produit->getHash();
                     $d->produit_libelle = $produit->getLibelle();
-                    $d->total_debut_mois = $produit->total_debut_mois;
+                    $d->stocks_debut_initial = $produit->stocks_debut->initial;
+                    $d->stocks_debut_dont_revendique = $produit->stocks_debut->dont_revendique;
                     $d->total_entrees = $produit->total_entrees;
                     $d->total_sorties = $produit->total_sorties;
-                    $d->total = $produit->total;
+                    $d->total_entrees_revendique = $produit->total_entrees_revendique;
+                    $d->total_sorties_revendique = $produit->total_sorties_revendique;
+                    $d->stocks_fin_final = $produit->stocks_fin->final;
+                    $d->stocks_fin_dont_revendique = $produit->stocks_fin->dont_revendique;
                     $d->total_facturable = $produit->total_facturable;
                     $this->produits[] = $d;
                 }
@@ -183,12 +192,16 @@ class drmComponents extends sfComponents {
             $this->periode_fin = ConfigurationClient::getInstance()->getPeriodeLibelle($drm->periode);
         }
 
-        $revs = RevendicationStocksView::getInstance()->findByCampagneAndEtablissement($this->campagne, $this->etablissement->identifiant);
-        foreach ($revs as $rev) {
-            if (!isset($this->recaps[$rev->produit_hash])) {
-                $this->recaps[$rev->produit_hash] = $this->initLigneRecap($conf, $rev->produit_hash);
+        try {
+            $revs = RevendicationStocksView::getInstance()->findByCampagneAndEtablissement($this->campagne, $this->etablissement->identifiant);
+            foreach ($revs as $rev) {
+                if (!isset($this->recaps[$rev->produit_hash])) {
+                    $this->recaps[$rev->produit_hash] = $this->initLigneRecap($conf, $rev->produit_hash);
+                }
+                $this->recaps[$rev->produit_hash]['volume_revendique_drev'] += $rev->volume;
             }
-            $this->recaps[$rev->produit_hash]['volume_revendique_drev'] += $rev->volume;
+        } catch (Exception $e) {
+            
         }
 
         $dss = DSStocksView::getInstance()->findByCampagneAndEtablissement($this->campagne, null, $this->etablissement->identifiant);

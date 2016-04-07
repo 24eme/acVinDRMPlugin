@@ -1,8 +1,9 @@
 <ol class="breadcrumb">
-    <li><a href="<?php echo url_for('drm') ?>">Page d'accueil</a></li>
-    <li><a href="<?php echo url_for('drm_etablissement', array('identifiant' => $etablissement->identifiant)) ?>" class="active"><?php echo $etablissement->nom ?></a></li>
+    <li><a href="<?php echo url_for('drm') ?>">DRM</a></li>
+    <li><a href="<?php echo url_for('drm_etablissement', array('identifiant' => $etablissement->identifiant)) ?>"><?php echo $etablissement->nom ?> (<?php echo $etablissement->identifiant ?>)</a></li>
+    <li><a href="<?php echo url_for('drm_etablissement', array('identifiant' => $etablissement->identifiant)) ?>">Calendrier</a></li>
+    <li><a href="" class="active"><?php echo ($campagne == -1) ? "Les derniers mois" : $campagne ?></a></li>
 </ol>
-
 
 <div class="row">
     <div class="col-xs-12">
@@ -11,15 +12,9 @@
 
     <div class="col-xs-12">
         <?php if ($campagne == -1) : ?>
-            <h2>Espace drm de <?php echo $societe->raison_sociale; ?> (<?php echo $societe->identifiant; ?>)</h2>
+            <h3>Espace DRM</h3>
         <?php else: ?>
-            <h2>Historique des drm de <?php echo $societe->raison_sociale; ?> (<?php echo $societe->identifiant; ?>)</h2>
-        <?php endif; ?>
-
-        <?php if ($etablissement->type_dr) : ?>
-            <div class="alert alert-warning">
-                Cet opérateur effectue des <?php echo $etablissement->type_dr; ?>
-            </div>
+            <h3>Historique des DRM</h3>
         <?php endif; ?>
 
         <?php if ($isTeledeclarationMode) : if ($campagne == -1) : ?>
