@@ -20,6 +20,15 @@ class DRMDetails extends BaseDRMDetails {
         return $this->get($slug);
     }
 
+
+    public function cleanNoeuds() {
+        if (count($this) == 0) {
+            return $this;
+        }
+
+        return null;
+    }
+
     public function addProduit($labels = array()) {
         $detail = $this->add($this->slugifyLabels($labels));
         $detail->labels = $labels;

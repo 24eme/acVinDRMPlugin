@@ -10,7 +10,7 @@ $tabindex = $numProduit * 100 ;
         <div class="panel-heading head panel-heading-xs text-center pointer"><?php echo $form->getObject()->getLibelle("%format_libelle%") ?></div>
         <div class="col_cont list-group">
             <a href="#" class="col_curseur" data-curseur="<?php echo $form->getObject()->getKey() ?>"></a>
-            <form action="<?php echo url_for('drm_edition_update', $form->getObject()) ?>" method="post">
+            <form action="<?php echo url_for('drm_edition_update', array('sf_subject' => $form->getObject(), 'details' => $detailsKey)) ?>" method="post">
                 <?php echo $form->renderHiddenFields(); ?>
                 <div class="list-group-item list-group-item-xs groupe p_gris" data-groupe-id="1">
                     <h4 class="form-group form-group-xs" style="height: 17px;">
@@ -30,7 +30,7 @@ $tabindex = $numProduit * 100 ;
                                 }
                                 echo $form['stocks_debut'][$key]->render($allAttributes);
                                 ?>
-                            </h4> 
+                            </h4>
                         <?php endif; ?>
                     <?php endforeach; ?>
 
@@ -62,10 +62,10 @@ $tabindex = $numProduit * 100 ;
                             </li>
                             <?php
                         endforeach;
-                        ?> 
+                        ?>
                         <li class="form-group form-group-xs groupe no_favoris" style="height: 21px;">
                             <a class="btn btn-default form-control raccourcis_ouvrir click-on-space-key text-center" style="border-color: #fff;" tabindex="<?php echo $tabindex ?>" data-groupe-id="3" ><span class="glyphicon glyphicon-chevron-down"></span></a>
-                        </li>                        
+                        </li>
                     </ul>
 
                     <div class="groupe p_gris" data-groupe-id="3">

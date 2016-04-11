@@ -5,7 +5,7 @@
  */
 
 abstract class _DRMTotal extends acCouchdbDocumentTree {
-    
+
     public function getConfig() {
 
         return $this->getDocument()->getConfig()->get($this->getHash());
@@ -17,16 +17,16 @@ abstract class _DRMTotal extends acCouchdbDocumentTree {
         if($teledeclarationMode && $this->getDocument()->isTeledeclare()) {
             $attributes[] = _ConfigurationDeclaration::ATTRIBUTE_DOUANE_ACTIF;
         }
-        
-        return $attributes; 
+
+        return $attributes;
     }
 
     public function getConfigProduits($teledeclarationMode = false) {
 
         return $this->getConfig()->formatProduits($this->getDocument()->getFirstDayOfPeriode(),
-                                                  $this->getDocument()->getInterpro()->get('_id'), 
+                                                  $this->getDocument()->getInterpro()->get('_id'),
                                                   $this->getDocument()->getDepartement(),
-                                                  "%format_libelle% (%code_produit%)", 
+                                                  "%format_libelle% (%code_produit%)",
                                                   $this->getConfigProduitsAttributes($teledeclarationMode));
     }
 
@@ -57,20 +57,20 @@ abstract class _DRMTotal extends acCouchdbDocumentTree {
         $this->total_revendique = null;
         $this->total = null;
     }
-    
+
 	protected function update($params = array()) {
         parent::update($params);
         $this->total_debut_mois = $this->getTotalByKey('total_debut_mois');
         $this->total_recolte = $this->getTotalByKey('total_recolte');
         $this->total_entrees = $this->getTotalByKey('total_entrees');
-        $this->total_sorties = $this->getTotalByKey('total_sorties');        
+        $this->total_sorties = $this->getTotalByKey('total_sorties');
         $this->total_entrees_revendique = $this->getTotalByKey('total_entrees_revendique');
         $this->total_sorties_revendique = $this->getTotalByKey('total_sorties_revendique');
         $this->total_facturable = $this->getTotalByKey('total_facturable');
         $this->total_revendique = $this->getTotalByKey('total_revendique');
         $this->total = $this->get('total_debut_mois') + $this->get('total_entrees') - $this->get('total_sorties');
     }
-    
+
     private function getTotalByKey($key) {
     	$sum = 0;
     	foreach ($this->getFields() as $field => $k) {
@@ -98,7 +98,7 @@ abstract class _DRMTotal extends acCouchdbDocumentTree {
         foreach($this->getChildrenNode() as $item) {
             $sum += $item->sommeLignes($lines);
         }
-        
+
         return $sum;
     }
 
@@ -156,7 +156,7 @@ abstract class _DRMTotal extends acCouchdbDocumentTree {
         if (!$sister) {
             $item = $this->getParentNode()->getPreviousSisterWithMouvementCheck();
             if ($item) {
-               
+
                $sister = $item->getChildrenNode()->getLast();
             }
         }
@@ -166,7 +166,7 @@ abstract class _DRMTotal extends acCouchdbDocumentTree {
             return $sister->getPreviousSisterWithMouvementCheck();
         }
 
-        return $sister; 
+        return $sister;
     }
 
     public function getNextSisterWithMouvementCheck() {
@@ -180,7 +180,7 @@ abstract class _DRMTotal extends acCouchdbDocumentTree {
         if (!$sister) {
             $item = $this->getParentNode()->getNextSisterWithMouvementCheck();
             if ($item) {
-               
+
                $sister = $item->getChildrenNode()->getFirst();
             }
         }
@@ -202,18 +202,18 @@ abstract class _DRMTotal extends acCouchdbDocumentTree {
         return $produits;
     }
 
-    public function getProduitsDetails($teledeclarationMode = false) {
+    public function getProduitsDetails($teledeclarationMode = false, $detailsKey = null) {
         $produits = array();
         foreach($this->getChildrenNode() as $key => $item) {
-            $produits = array_merge($produits, $item->getProduitsDetails($teledeclarationMode));
+            $produits = array_merge($produits, $item->getProduitsDetails($teledeclarationMode, $detailsKey));
         }
 
         return $produits;
     }
 
-    public function getProduitsDetailsSorted($teledeclarationMode = false) {
-        $produits = $this->getProduitsDetails($teledeclarationMode);
-        
+    public function getProduitsDetailsSorted($teledeclarationMode = false, $detailsKey = null) {
+        $produits = $this->getProduitsDetails($teledeclarationMode, $detailsKey);
+
         uasort($produits, "_DRMTotal::sortProduitByLibelle");
 
         return $produits;
@@ -264,22 +264,22 @@ abstract class _DRMTotal extends acCouchdbDocumentTree {
         $this->_cleanNoeuds();
 
         if (count($this->getChildrenNode()) == 0) {
-            
+
             return $this;
         }
 
         return null;
     }
-    
+
     public function hasProduitDetailsWithStockNegatif() {
         foreach ($this->getProduitsDetails() as $prod) {
             if ($prod->hasProduitDetailsWithStockNegatif()) {
                 return true;
             }
-        }        
+        }
         return false;
     }
-    
+
     abstract public function getChildrenNode();
 
 }

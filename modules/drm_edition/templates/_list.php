@@ -9,11 +9,11 @@
         'drm' => $drm,
         'favoris' => $favoris,
         'formFavoris' => $formFavoris,
-        'isTeledeclarationMode' => $isTeledeclarationMode, 
+        'isTeledeclarationMode' => $isTeledeclarationMode,
         'detailsNodes' => $detailsNodes));
     ?>
         <div id="col_saisies" class="col-xs-8 well" style="overflow-x: auto; position: relative;" >
-          
+
             <script type="text/javascript">
                 /* Colonne avec le focus par défaut */
                 var colFocusDefaut = <?php echo getNumberOfFirstProduitWithMovements($produits); if(is_null(getNumberOfFirstProduitWithMovements($produits))): echo '""'; endif; ?>;
@@ -23,12 +23,13 @@
             <?php $first = true;
             $cpt = 1;
             ?>
-            <?php foreach ($produits as $key => $produit): ?> 
-                <?php if(!$produit->hasMovements()): continue; endif; ?> 
+            <?php foreach ($produits as $key => $produit): ?>
+                <?php if(!$produit->hasMovements()): continue; endif; ?>
                 <?php
                 include_component('drm_edition', 'itemForm', array(
                     'config' => $config,
                     'detail' => $produit,
+                    'detailsKey' => $detailsKey,
                     'active' => ($detail && $detail->getHash() == $produit->getHash()),
                     'numProduit' => $cpt,
                     'form' => $form,

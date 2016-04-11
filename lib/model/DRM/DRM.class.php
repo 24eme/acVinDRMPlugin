@@ -8,6 +8,8 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
 
     const NOEUD_TEMPORAIRE = 'TMP';
     const DEFAULT_KEY = 'DEFAUT';
+    const DETAILS_KEY_ACQUITTE = 'ACQUITTE';
+    const DETAILS_KEY_SUSPENDU = 'SUSPENDU';
 
     protected $mouvement_document = null;
     protected $version_document = null;
@@ -80,22 +82,27 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
         return $this->_set('periode', $periode);
     }
 
-    public function getProduit($hash, $labels = array()) {
+    public function getProduit($hash, $detailsKey, $labels = array()) {
         if (!$this->exist($hash)) {
 
             return false;
         }
 
-        return $this->get($hash)->details->getProduit($labels);
+        if(!$this->get($hash)->exist($detailsKey)) {
+
+            return false;
+        }
+
+        return $this->get($hash)->get($detailsKey)->getProduit($labels);
     }
 
-    public function addProduit($hash, $labels = array()) {
-        if ($p = $this->getProduit($hash, $labels)) {
+    public function addProduit($hash, $detailsKey, $labels = array()) {
+        if ($p = $this->getProduit($hash, $detailsKey, $labels)) {
 
             return $p;
         }
 
-        $detail = $this->getOrAdd($hash)->details->addProduit($labels);
+        $detail = $this->getOrAdd($hash)->addDetails($detailsKey)->addProduit($labels);
         $detail->produit_libelle = $detail->getLibelle($format = "%format_libelle% %la%");
 
         return $detail;
@@ -138,9 +145,9 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
         return $this->declaration->getProduitsWithCorrespondance();
     }
 
-    public function getProduitsDetails($teledeclarationMode = false) {
+    public function getProduitsDetails($teledeclarationMode = false, $detailsKey = null) {
 
-        return $this->declaration->getProduitsDetails($teledeclarationMode);
+        return $this->declaration->getProduitsDetails($teledeclarationMode, $detailsKey);
     }
 
     public function getDetailsAvecVrac() {
@@ -657,20 +664,20 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
                 foreach ($detail->entrees as $keyEntree => $valueEntree) {
                     if ($valueEntree && !in_array($keyEntree, $listEntrees)) {
                         $key_to_remove[] = $produit_hash.'/entrees/'.$keyEntree;
-                          
+
                     }
                 }
                 foreach ($detail->sorties as $keySortie => $valueSortie) {
                     if ($valueSortie instanceof DRMESDetails) {
                         continue;
                     }
-                    if ($valueSortie && !in_array($keySortie, $listSorties)) {                        
+                    if ($valueSortie && !in_array($keySortie, $listSorties)) {
                        $key_to_remove[] = $produit_hash.'/sorties/'.$keySortie;
                     }
                 }
             }
         }
-        
+
         foreach ($key_to_remove as $key) {
            $this->remove($key);
         }
@@ -1285,7 +1292,7 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
                 $droitDouane->clearDroitDouane();
             }
         } catch (Exception $e) {
-            
+
         }
     }
 

@@ -2,7 +2,7 @@
 
 /* This file is part of the acVinComptePlugin package.
  * Copyright (c) 2011 Actualys
- * Authors :	
+ * Authors :
  * Tangui Morlier <tangui@tangui.eu.org>
  * Charlotte De Vichet <c.devichet@gmail.com>
  * Vincent Laurent <vince.laurent@gmail.com>
@@ -14,7 +14,7 @@
 
 /**
  * DRMRouting configuration.
- * 
+ *
  * @package    DRMRouting
  * @subpackage lib
  * @author     Tangui Morlier <tangui@tangui.eu.org>
@@ -37,8 +37,8 @@ class DRMRouting {
         $r->prependRoute('drm', new sfRoute('/drm', array('module' => 'drm',
             'action' => 'index')));
 
-        $r->prependRoute('drm_etablissement_selection',  new sfRoute('/drm/etablissement-selection', 
-                                                                    array('module' => 'drm', 
+        $r->prependRoute('drm_etablissement_selection',  new sfRoute('/drm/etablissement-selection',
+                                                                    array('module' => 'drm',
                                                                     'action' => 'etablissementSelection'),
                                                                     array('sf_method' => array('post'))
                                                         ));
@@ -123,7 +123,11 @@ class DRMRouting {
             'control' => array('edition'),
         )));
 
-
+        $r->prependRoute('drm_edition_details', new DRMRoute('/drm/:identifiant/edition/:periode_version/edition/:details', array('module' => 'drm_edition',
+            'action' => 'saisieMouvements'), array('sf_method' => array('get', 'post')), array('model' => 'DRM',
+            'type' => 'object',
+            'control' => array('edition'),
+        )));
 
         $r->prependRoute('drm_edition_detail', new DRMDetailRoute('/drm/:identifiant/edition/:periode_version/edition/:certification/:genre/:appellation/:mention/:lieu/:couleur/:cepage/:detail', array('module' => 'drm_edition',
             'action' => 'detail'), array('sf_method' => array('get')), array('model' => 'DRMDetail',
@@ -131,14 +135,14 @@ class DRMRouting {
             'control' => array('edition'),
         )));
 
-        $r->prependRoute('drm_edition_produit_ajout', new DRMRoute('/drm/:identifiant/edition/:periode_version/edition/produit-ajout', array('module' => 'drm_edition',
+        $r->prependRoute('drm_edition_produit_ajout', new DRMRoute('/drm/:identifiant/edition/:periode_version/:details/edition/produit-ajout', array('module' => 'drm_edition',
             'action' => 'produitAjout'), array('sf_method' => array('get', 'post')), array('model' => 'DRMAppellation',
             'type' => 'object',
             'add_noeud' => true,
             'control' => array('edition'),
         )));
 
-        $r->prependRoute('drm_edition_update', new DRMDetailRoute('/drm/:identifiant/edition/:periode_version/edition/update/:certification/:genre/:appellation/:mention/:lieu/:couleur/:cepage/:detail', array('module' => 'drm_edition',
+        $r->prependRoute('drm_edition_update', new DRMDetailRoute('/drm/:identifiant/edition/:periode_version/edition/update/:certification/:genre/:appellation/:mention/:lieu/:couleur/:cepage/:details/:detail', array('module' => 'drm_edition',
             'action' => 'update'), array('sf_method' => array('post')), array('model' => 'DRMDetail',
             'type' => 'object',
             'control' => array('edition'),
@@ -177,7 +181,7 @@ class DRMRouting {
 
         $r->prependRoute('drm_verification_fichier_edi', new sfRoute('/drm/:identifiant/verification-edi/:periode/:md5', array('module' => 'drm',
             'action' => 'verificationEdi')));
-        
+
         $r->prependRoute('drm_creation_fichier_edi', new sfRoute('/drm/:identifiant/creation-edi/:periode/:md5', array('module' => 'drm',
             'action' => 'creationEdi')));
 

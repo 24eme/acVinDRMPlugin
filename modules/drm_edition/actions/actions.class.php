@@ -3,9 +3,13 @@
 class drm_editionActions extends drmGeneriqueActions {
 
     public function executeSaisieMouvements(sfWebRequest $request) {
+        if(!$this->getRequest()->getParameter('details')) {
+
+            return $this->redirect('drm_edition_details', array('sf_subject' => $this->getRoute()->getDRM(), 'details' =>  DRM::DETAILS_KEY_SUSPENDU));
+        }
+        $this->isTeledeclarationMode = $this->isTeledeclarationDrm();
         $this->init();
         $this->initSocieteAndEtablissementPrincipal();
-        $this->isTeledeclarationMode = $this->isTeledeclarationDrm();
         $this->loadFavoris();
         $this->initDeleteForm();
         $this->formFavoris = new DRMFavorisForm($this->drm);
@@ -16,6 +20,9 @@ class drm_editionActions extends drmGeneriqueActions {
             $this->formValidation->bind($request->getParameter($this->formValidation->getName()));
             if ($this->formValidation->isValid()) {
                 $this->formValidation->save();
+                if($this->detailsKey == DRM::DETAILS_KEY_SUSPENDU) {
+                    $this->redirect('drm_edition_details', array('sf_subject' => $this->drm, 'details' =>  DRM::DETAILS_KEY_ACQUITTE));
+                }
                 if ($this->isTeledeclarationMode) {
                     $this->redirect('drm_crd', $this->formValidation->getObject());
                 } else {
@@ -68,7 +75,7 @@ class drm_editionActions extends drmGeneriqueActions {
     public function executeProduitAjout(sfWebRequest $request) {
         $this->init();
         $this->isTeledeclarationMode = $this->isTeledeclarationDrm();
-        $this->form = new DRMProduitForm($this->drm, $this->drm->declaration->getConfig(), $this->isTeledeclarationMode);
+        $this->form = new DRMProduitForm($this->drm, $this->drm->declaration->getConfig(), $this->detailsKey, $this->isTeledeclarationMode);
         $this->form->bind($request->getParameter($this->form->getName()));
         if ($this->form->isValid()) {
             $detail = $this->form->addProduit();
@@ -86,7 +93,7 @@ class drm_editionActions extends drmGeneriqueActions {
                                 "revision" => $this->drm->get('_rev'))
                 )));
             } else {
-                $this->redirect('drm_edition', $this->drm);
+                $this->redirect('drm_edition', array('sf_subject' => $this->drm, 'details' => $this->detailsKey));
             }
         }
 
@@ -100,12 +107,13 @@ class drm_editionActions extends drmGeneriqueActions {
         }
     }
 
-    protected function init() {
+    protected function init($teledeclarationMode = false) {
         $this->form = null;
         $this->detail = null;
+        $this->detailsKey = $this->getRequest()->getParameter('details');
         $this->drm = $this->getRoute()->getDRM();
         $this->config = $this->drm->declaration->getConfig();
-        $this->details = $this->drm->declaration->getProduitsDetailsSorted();
+        $this->details = $this->drm->declaration->getProduitsDetailsSorted($teledeclarationMode, $this->detailsKey);
         if (!$this->drm->exist('favoris')) {
             $this->drm->buildFavoris();
         }

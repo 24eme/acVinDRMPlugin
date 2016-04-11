@@ -1,6 +1,6 @@
     <ul class="breadcrumb breadcrumb-etape">
         <?php $cpt_etape = 1; ?>
-        <?php if (isset($isTeledeclarationMode) && $isTeledeclarationMode) : ?> 
+        <?php if (isset($isTeledeclarationMode) && $isTeledeclarationMode) : ?>
             <?php $actif = ($etape_courante == DRMClient::ETAPE_CHOIX_PRODUITS); ?>
             <?php $past = ((!$actif) && (array_search($drm->etape, DRMClient::$drm_etapes) >= array_search(DRMClient::ETAPE_CHOIX_PRODUITS, DRMClient::$drm_etapes))); ?>
             <li class="<?php if($actif): ?>active<?php endif; ?> <?php if (!$past && !$actif): ?>disabled<?php endif; ?> <?php if ($past && !$actif): ?>visited<?php endif; ?>">
@@ -10,28 +10,36 @@
                 </a>
             </li>
         <?php endif; ?>
-        <?php $actif = ($etape_courante == DRMClient::ETAPE_SAISIE); ?>
-        <?php $past = ((!$actif) && (array_search($drm->etape, DRMClient::$drm_etapes) >= array_search(DRMClient::ETAPE_SAISIE, DRMClient::$drm_etapes))); ?>
+        <?php $actif = ($etape_courante == DRMClient::ETAPE_SAISIE_SUSPENDU); ?>
+        <?php $past = ((!$actif) && (array_search($drm->etape, DRMClient::$drm_etapes) >= array_search(DRMClient::ETAPE_SAISIE_SUSPENDU, DRMClient::$drm_etapes))); ?>
         <li class="<?php if($actif): ?>active<?php endif; ?> <?php if (!$past && !$actif): ?>disabled<?php endif; ?> <?php if ($past && !$actif): ?>visited<?php endif; ?>">
-            <a href="<?php echo url_for('drm_edition', $drm); ?>">
-                <span>Mouvements</span>
+            <a href="<?php echo url_for('drm_edition_details', array('sf_subject' => $drm, 'details' => DRM::DETAILS_KEY_SUSPENDU)); ?>">
+                <span>Mouvements Suspendus</span>
                 <small>Etape <?php echo $cpt_etape++; ?></small>
             </a>
         </li>
-        <?php if (isset($isTeledeclarationMode) && $isTeledeclarationMode) : ?> 
+        <?php $past = ((!$actif) && (array_search($drm->etape, DRMClient::$drm_etapes) >= array_search(DRMClient::ETAPE_SAISIE_ACQUITTE, DRMClient::$drm_etapes))); ?>
+        <?php $actif = ($etape_courante == DRMClient::ETAPE_SAISIE_ACQUITTE); ?>
+        <li class="<?php if($actif): ?>active<?php endif; ?> <?php if (!$past && !$actif): ?>disabled<?php endif; ?> <?php if ($past && !$actif): ?>visited<?php endif; ?>">
+            <a href="<?php echo url_for('drm_edition_details', array('sf_subject' => $drm, 'details' => DRM::DETAILS_KEY_ACQUITTE)); ?>">
+                <span>Mouvements Acquittés</span>
+                <small>Etape <?php echo $cpt_etape++; ?></small>
+            </a>
+        </li>
+        <?php if (isset($isTeledeclarationMode) && $isTeledeclarationMode) : ?>
             <?php $actif = ($etape_courante == DRMClient::ETAPE_CRD); ?>
             <?php $past = ((!$actif) && (array_search($drm->etape, DRMClient::$drm_etapes) >= array_search(DRMClient::ETAPE_CRD, DRMClient::$drm_etapes))); ?>
-            <li class="<?php if($actif): ?>active<?php endif; ?> <?php if (!$past && !$actif): ?>disabled<?php endif; ?> <?php if ($past && !$actif): ?>visited<?php endif; ?>"> 
+            <li class="<?php if($actif): ?>active<?php endif; ?> <?php if (!$past && !$actif): ?>disabled<?php endif; ?> <?php if ($past && !$actif): ?>visited<?php endif; ?>">
                <a href="<?php echo url_for('drm_crd', $drm); ?>">
                     <span>CRD</span>
                     <small>Etape <?php echo $cpt_etape++; ?></small>
                 </a>
             </li>
         <?php endif; ?>
-        <?php if (isset($isTeledeclarationMode) && $isTeledeclarationMode) : ?> 
+        <?php if (isset($isTeledeclarationMode) && $isTeledeclarationMode) : ?>
             <?php $actif = ($etape_courante == DRMClient::ETAPE_ADMINISTRATION); ?>
             <?php $past = ((!$actif) && (array_search($drm->etape, DRMClient::$drm_etapes) >= array_search(DRMClient::ETAPE_ADMINISTRATION, DRMClient::$drm_etapes))); ?>
-            <li class="<?php if($actif): ?>active<?php endif; ?> <?php if (!$past && !$actif): ?>disabled<?php endif; ?> <?php if ($past && !$actif): ?>visited<?php endif; ?>"> 
+            <li class="<?php if($actif): ?>active<?php endif; ?> <?php if (!$past && !$actif): ?>disabled<?php endif; ?> <?php if ($past && !$actif): ?>visited<?php endif; ?>">
                 <a href="<?php echo url_for('drm_annexes', $drm); ?>">
                     <span>Annexes</span>
                     <small>Etape <?php echo $cpt_etape++; ?></small>

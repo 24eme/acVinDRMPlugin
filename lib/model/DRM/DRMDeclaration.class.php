@@ -48,12 +48,12 @@ class DRMDeclaration extends BaseDRMDeclaration {
         return false;
     }
 
-    public function getProduitsDetailsSorted($teledeclarationMode = false) {
+    public function getProduitsDetailsSorted($teledeclarationMode = false, $detailsKey = null) {
         $produits = array();
 
         foreach ($this->certifications as $certification) {
 
-            $produits = array_merge($produits, $certification->getProduitsDetailsSorted($teledeclarationMode));
+            $produits = array_merge($produits, $certification->getProduitsDetailsSorted($teledeclarationMode, $detailsKey));
         }
 
         return $produits;
