@@ -3,7 +3,7 @@
 class drm_editionActions extends drmGeneriqueActions {
 
     public function executeSaisieMouvements(sfWebRequest $request) {
-        if(!$this->getRequest()->getParameter('details')) {
+        if(!($drmdetailtype = $this->getRequest()->getParameter('details'))) {
 
             return $this->redirect('drm_edition_details', array('sf_subject' => $this->getRoute()->getDRM(), 'details' =>  DRM::DETAILS_KEY_SUSPENDU));
         }
@@ -14,7 +14,7 @@ class drm_editionActions extends drmGeneriqueActions {
         $this->initDeleteForm();
         $this->formFavoris = new DRMFavorisForm($this->drm);
         $this->formValidation = new DRMMouvementsValidationForm($this->drm, array('isTeledeclarationMode' => $this->isTeledeclarationMode));
-        $this->detailsNodes = $this->config->details;
+        $this->detailsNodes = $this->config->get($drmdetailtype);
 
         if ($request->isMethod(sfRequest::POST)) {
             $this->formValidation->bind($request->getParameter($this->formValidation->getName()));
