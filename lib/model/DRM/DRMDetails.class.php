@@ -28,7 +28,19 @@ class DRMDetails extends BaseDRMDetails {
         return null;
     }
 
-    public function getLibelleTypeDRM() {
+    public function getTypeDRM() {
+        if($this->getKey() == DRM::DETAILS_KEY_SUSPENDU) {
+
+            return DRMClient::TYPE_DRM_SUSPENDU;
+        }
+
+        if($this->getKey() == DRM::DETAILS_KEY_ACQUITTE) {
+
+            return DRMClient::TYPE_DRM_ACQUITTE;
+        }
+    }
+
+    public function getTypeDRMLibelle() {
         if($this->getKey() == DRM::DETAILS_KEY_SUSPENDU) {
 
             return "Suspendu";
