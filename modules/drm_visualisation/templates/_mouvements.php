@@ -22,8 +22,8 @@ if (!isset($isTeledeclarationMode)) {
     <table id="table_mouvements" class="table table-striped table-condensed">
         <thead>
             <tr>
-                <th class="col-xs-3">Produits</th>
                 <th class="col-xs-2">Type</th>
+                <th class="col-xs-3">Produits</th>
                 <th class="col-xs-3">Mouvement</th>
                 <th class="col-xs-2"><span class="pull-right">Volume</span></th>
                 <th class="col-xs-2"><span class="pull-left">(dont revendiqué)</span></th>
@@ -32,15 +32,17 @@ if (!isset($isTeledeclarationMode)) {
         <tbody>
             <?php $i = 1; ?>
             <?php
-            foreach ($mouvementsByProduit as $produit_hash => $mouvements):
+            $correspondances = DRMClient::$correspondance_types;
+            foreach (array_keys($mouvementsByProduit->getRawValue()) as $type):
+            	foreach ($mouvementsByProduit[$type] as $produit_hash => $mouvements):
                 $produit = $drm->get($produit_hash);
                 $produit_libelle = $produit->getLibelle();
                 $libelleDoc = DRMClient::getInstance()->getLibelleFromId($drm->_id);
                 ?>
-                <?php foreach($produit->getProduitsDetails() as $detail): ?>
+                <?php foreach($produit->getProduitsDetails(true, $correspondances[$type]) as $detail): ?>
                 <tr data-words='<?php echo json_encode(array_merge(array(strtolower($produit_libelle), strtolower("Stock début"))), JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?>' id="<?php echo mouvement_get_id($drm->_id) ?>" class="hamzastyle-item">
-                    <td><?php if($drm->version): ?><small class="text-muted"><?php echo $drm->version ?></small> <?php endif; ?><a href="#tab=mouvements&filtre=<?php echo strtolower($produit_libelle); ?>"><strong><?php echo $produit_libelle ?></strong></a></td>
                     <td><?php echo $detail->getTypeDRMLibelle() ?></td>
+                    <td><?php if($drm->version): ?><small class="text-muted"><?php echo $drm->version ?></small> <?php endif; ?><a href="#tab=mouvements&filtre=<?php echo strtolower($produit_libelle); ?>"><strong><?php echo $produit_libelle ?></strong></a></td>
                     <td><strong>Stock début</strong></td>
                     <td><strong> <span class="pull-right"><?php echoFloat($produit->total_debut_mois) . ' hl'; ?></span></strong></td>
                     <td><strong> <span class="pull-left">(<?php echo ($detail->stocks_debut->dont_revendique) ? sprintFloat($detail->stocks_debut->dont_revendique) : "0.00"; ?>)</span></strong></td>
@@ -48,8 +50,8 @@ if (!isset($isTeledeclarationMode)) {
                 <?php endforeach ?>
                 <?php foreach ($mouvements as $mouvement): ?>
                     <tr data-words='<?php echo json_encode(array_merge(array(strtolower($mouvement->produit_libelle), strtolower($mouvement->type_libelle), strtolower($mouvement->detail_libelle))), JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?>' id="<?php echo mouvement_get_id($mouvement) ?>" class="hamzastyle-item <?php echo ($mouvement->facturable && (!$isTeledeclarationMode || $visualisation)) ? " facturable" : ""; ?>">
-                        <td><a href="#tab=mouvements&filtre=<?php echo strtolower($produit_libelle); ?>"><?php if($drm->version): ?><small class="text-muted"><?php echo ($mouvement->version) ? $mouvement->version : "M00" ?></small> <?php endif; ?><?php echo $mouvement->produit_libelle ?></a></td>
                         <td><?php echo $mouvement->type_drm_libelle ?></td>
+                        <td><a href="#tab=mouvements&filtre=<?php echo strtolower($produit_libelle); ?>"><?php if($drm->version): ?><small class="text-muted"><?php echo ($mouvement->version) ? $mouvement->version : "M00" ?></small> <?php endif; ?><?php echo $mouvement->produit_libelle ?></a></td>
                         <td><?php
                             if ($mouvement->vrac_numero) {
                                 echo (!isset($no_link) || !$no_link) ? '<a href="' . url_for("vrac_visualisation", array("numero_contrat" => $mouvement->vrac_numero)) . '">' : '';
@@ -67,17 +69,17 @@ if (!isset($isTeledeclarationMode)) {
                     </tr>
                 <?php endforeach; ?>
 
-                <?php foreach($produit->getProduitsDetails() as $detail): ?>
+                <?php foreach($produit->getProduitsDetails(true, $correspondances[$type]) as $detail): ?>
                 <tr data-words='<?php echo json_encode(array_merge(array(strtolower($produit_libelle), strtolower("Stock fin"))), JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?>' id="<?php echo mouvement_get_id($drm->_id) ?>" class="hamzastyle-item">
-                    <td><?php if($drm->version): ?><small class="text-muted"><?php echo $drm->version ?></small> <?php endif; ?><a href="#tab=mouvements&filtre=<?php echo strtolower($produit_libelle); ?>"><strong><?php echo $produit_libelle ?></strong></a></td>
                     <td><?php echo $detail->getTypeDRMLibelle() ?></td>
+                    <td><?php if($drm->version): ?><small class="text-muted"><?php echo $drm->version ?></small> <?php endif; ?><a href="#tab=mouvements&filtre=<?php echo strtolower($produit_libelle); ?>"><strong><?php echo $produit_libelle ?></strong></a></td>
                     <td><strong>Stock fin</strong></td>
                     <td><strong><span class="pull-right"><?php echoFloat($produit->total) . ' hl'; ?></span></strong></td>
                     <td><strong><span class="pull-left">(<?php echo ($detail->stocks_fin->dont_revendique) ? sprintFloat($detail->stocks_fin->dont_revendique) : "0.00"; ?>)</span></strong></td>
                 </tr>
                 <?php endforeach; ?>
 
-            <?php endforeach; ?>
+            <?php endforeach; endforeach; ?>
         </tbody>
     </table>
 <?php else: ?>
