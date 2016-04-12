@@ -5,9 +5,10 @@
             <table id="table_drm_choix_produit" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th class="col-xs-7 text-left">Produits <a data-form="#form_choix_produits" href="<?php echo url_for('drm_choix_produit', array('sf_subject' => $drm, 'add_produit' => $certificationProduits->certification_keys)) ?>" value="" class="btn btn-link btn-xs link-submit pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Ajouter un produit</a>
+                        <th class="col-xs-6 text-left">Produits <a data-form="#form_choix_produits" href="<?php echo url_for('drm_choix_produit', array('sf_subject' => $drm, 'add_produit' => $certificationProduits->certification_keys)) ?>" value="" class="btn btn-link btn-xs link-submit pull-right"><span class="glyphicon glyphicon-plus-sign"></span> Ajouter un produit</a>
                         </th>
-                        <th class="col-xs-5 text-center">Mouvements à déclarer ce mois</th>
+                        <th class="col-xs-3 text-center">Mouvements à déclarer ce mois</th>
+                        <th class="col-xs-3 text-center">Déclarer des mouvements en droit acquitté</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -17,6 +18,7 @@
                             <tr>                        
                                 <td class="text-left"><?php echo $produit->getLibelle("%format_libelle%"); ?></td>
                                 <td class="text-center"><?php echo $form['produit' . $produit->getHashForKey()]->render(); ?></td>
+                                <td class="text-center"><?php echo $form['acquitte' . $produit->getHashForKey()]->render(); ?></td>
                             </tr>  
                             <?php ?>
                         <?php endforeach; ?>
