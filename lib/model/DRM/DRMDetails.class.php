@@ -28,6 +28,20 @@ class DRMDetails extends BaseDRMDetails {
         return null;
     }
 
+    public function getLibelleTypeDRM() {
+        if($this->getKey() == DRM::DETAILS_KEY_SUSPENDU) {
+
+            return "Suspendu";
+        }
+
+        if($this->getKey() == DRM::DETAILS_KEY_ACQUITTE) {
+
+            return "Acquitté";
+        }
+
+        return null;
+    }
+
     public function addProduit($labels = array()) {
         $detail = $this->add($this->slugifyLabels($labels));
         $detail->labels = $labels;

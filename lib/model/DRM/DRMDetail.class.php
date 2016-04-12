@@ -103,6 +103,11 @@ class DRMDetail extends BaseDRMDetail {
         return $this->getConfig()->getDocument()->formatLabelsLibelle($this->labels->toArray(), $format, $label_separator);
     }
 
+    public function getLibelleTypeDRM() {
+
+        return $this->getParent()->getLibelleTypeDRM();
+    }
+
     public function canSetStockDebutMois() {
         return !$this->hasPrecedente();
     }
