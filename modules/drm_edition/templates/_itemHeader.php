@@ -11,10 +11,10 @@ $favoris_sorties = $favoris->sorties;
             <div class="list-group-item list-group-item-xs groupe groupe_ouvert groupe_bloque" data-groupe-id="1">
                 <h4 class="form-group form-group-xs">Stock début</h4>
                 <ul class="list-unstyled">
-                    <?php foreach ($detailsNodes->getStocksDebut() as $key => $item): ?>         
+                    <?php foreach ($detailsNodes->getStocksDebut() as $key => $item): ?>
                         <?php if ($key != 'instance'): ?>
                     <li class="categorie_libelle form-group form-group-xs" >
-                                <span id="<?php echo 'stock_debut_' . $key ?>" class=" <?php echo 'stock_debut_' . $key ?>">                                    
+                                <span id="<?php echo 'stock_debut_' . $key ?>" class=" <?php echo 'stock_debut_' . $key ?>">
                                  <?php echo str_replace(" ", "&nbsp;", $item->getLibelle()); ?>
                                 </span>
                             </li>
@@ -31,7 +31,7 @@ $favoris_sorties = $favoris->sorties;
                             <li class="form-group form-group-xs" style="cursor: pointer;">
                                 <span class="glyphicon glyphicon-star"></span>
                                 <span id="<?php echo 'star_favoris_entrees_' . $key ?>" class="categorie_libelle <?php echo 'entrees_' . $key; ?> <?php echo (count($favoris_entrees) > 1 ) ? 'clickable' : ''; ?>">
-                                <?php echo $item->getLibelle(); ?>&nbsp;<small><span class="glyphicon glyphicon-question-sign"></span></small>
+                                <?php echo $item->getLibelle(); ?>&nbsp;<small><span class="glyphicon glyphicon-question-sign" title="<?php echo $item->getLibelleLong(); ?>"></span></small>
                                 </span>
                                 &nbsp;<a href="" class="msg_aide" data-msg="help_popup_drm_entrees_<?php echo $key; ?>" title="<?php echo $item->getLibelleLong(); ?>"></a>
                             </li>
@@ -45,9 +45,9 @@ $favoris_sorties = $favoris->sorties;
                         <?php foreach ($detailsNodes->getEntreesSorted() as $key => $item): ?>
                             <?php if (!$favoris_entrees->exist($key)): ?>
                                 <li class="form-group form-group-xs" style="cursor: pointer;">
-                                    <span class="glyphicon glyphicon-star-empty"></span>     
+                                    <span class="glyphicon glyphicon-star-empty"></span>
                                     <span id="<?php echo 'star_favoris_entrees_' . $key ?>" class="categorie_libelle <?php echo 'entrees_' . $key; ?>  <?php echo (count($favoris_entrees) < DRMClient::$drm_max_favoris_by_types_mvt[DRMClient::DRM_TYPE_MVT_ENTREES] ) ? 'clickable' : ''; ?>">
-                                        <?php echo $item->getLibelle(); ?>&nbsp;<small><span class="glyphicon glyphicon-question-sign"></span></small>
+                                        <?php echo $item->getLibelle(); ?>&nbsp;<small><span class="glyphicon glyphicon-question-sign" title="<?php echo $item->getLibelleLong(); ?>"></span></small>
                                     </span>
                                     &nbsp;<a href="" class="msg_aide" data-msg="help_popup_drm_entrees_<?php echo $key; ?>" title="<?php echo $item->getLibelleLong(); ?>"></a>
                                 </li>
@@ -55,7 +55,7 @@ $favoris_sorties = $favoris->sorties;
                         <?php endforeach; ?>
                     </ul>
                 </div>
-            </div>       
+            </div>
 
             <div class="list-group-item list-group-item-xs groupe groupe_ouvert groupe_bloque favoris" data-groupe-id="4">
                 <h4 style="height:22px;" class="form-group form-group-xs">Sorties</h4>
@@ -63,9 +63,9 @@ $favoris_sorties = $favoris->sorties;
                     <?php foreach ($detailsNodes->getSortiesSorted() as $key => $item): ?>
                         <?php if ($favoris_sorties->exist($key)): ?>
                             <li class="form-group form-group-xs" style="cursor: pointer;">
-                                <span class="glyphicon glyphicon-star"></span> 
+                                <span class="glyphicon glyphicon-star"></span>
                                 <span id="<?php echo 'star_favoris_sorties_' . $key ?>" class="categorie_libelle <?php echo 'sorties_' . $key; ?> <?php echo (count($favoris_sorties) > 1 ) ? 'clickable' : ''; ?>">
-                                    <?php echo $item->getLibelle(); ?>&nbsp;<small><span class="glyphicon glyphicon-question-sign"></span></small>
+                                    <?php echo $item->getLibelle(); ?>&nbsp;<small><span class="glyphicon glyphicon-question-sign" title="<?php echo $item->getLibelleLong(); ?>"></span></small>
                                 </span>&nbsp;<a href="" class="msg_aide" data-msg="help_popup_drm_sorties_<?php echo $key; ?>" title="<?php echo $item->getLibelleLong(); ?>"></a>
                             </li>
                         <?php endif; ?>
@@ -77,9 +77,9 @@ $favoris_sorties = $favoris->sorties;
                         <?php foreach ($detailsNodes->getSortiesSorted() as $key => $item): ?>
                             <?php if (!$favoris_sorties->exist($key)): ?>
                                 <li class="form-group form-group-xs">
-                                    <span class="glyphicon glyphicon-star-empty"></span> 
+                                    <span class="glyphicon glyphicon-star-empty"></span>
                                     <span id="<?php echo 'star_favoris_sorties_' . $key ?>" class="categorie_libelle <?php echo 'sorties_' . $key; ?> <?php echo (count($favoris_sorties) < DRMClient::$drm_max_favoris_by_types_mvt[DRMClient::DRM_TYPE_MVT_SORTIES] ) ? 'clickable' : ''; ?>">
-                                        <?php echo $item->getLibelle(); ?>&nbsp;<small><span class="glyphicon glyphicon-question-sign"></span></small>
+                                        <?php echo $item->getLibelle(); ?>&nbsp;<small><span class="glyphicon glyphicon-question-sign" title="<?php echo $item->getLibelleLong(); ?>"></span></small>
                                     </span>
                                     &nbsp;<a href="" class="msg_aide" data-msg="help_popup_drm_sorties_<?php echo $key; ?>" title="<?php echo $item->getLibelleLong(); ?>"></a>
                                 </li>
@@ -96,7 +96,7 @@ $favoris_sorties = $favoris->sorties;
                         <?php if ($key != 'instance'): ?>
                             <li class="form-group form-group-xs <?php echo ($key != 'revendique') ? '' : ' li_gris'; ?>">
                                 <?php echo str_replace(" ", "&nbsp;", $item->getLibelle()); ?>
-                            </li> 
+                            </li>
                         <?php endif; ?>
                     <?php endforeach;
                     ?>
