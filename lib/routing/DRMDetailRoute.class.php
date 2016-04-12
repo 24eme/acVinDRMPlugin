@@ -20,7 +20,7 @@ class DRMDetailRoute extends DRMLieuRoute {
         $drm_detail = $this->getDRM()->get($config_lieu->getHash())
                                      ->couleurs->add($parameters['couleur'])
                                      ->cepages->add($parameters['cepage'])
-                                     ->get("details_".$detailsKey)->get($parameters['detail']);
+                                     ->get($detailsKey)->get($parameters['detail']);
 
         return $drm_detail;
     }

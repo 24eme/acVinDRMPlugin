@@ -51,7 +51,7 @@ class DRMProduitForm extends acCouchdbForm
         $produits = $this->_drm->getConfigProduits($this->_isTeledeclarationMode);
 
         foreach($produits as $hash => $produit) {
-            if(array_key_exists($hash."/details/DEFAUT", $produit_existant)) {
+            if(array_key_exists($hash."/".$this->_detailsKey."/DEFAUT", $produit_existant)) {
                 unset($produits[$hash]);
             }
         }

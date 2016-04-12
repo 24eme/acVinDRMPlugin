@@ -20,7 +20,6 @@ class DRMDetails extends BaseDRMDetails {
         return $this->get($slug);
     }
 
-
     public function cleanNoeuds() {
         if (count($this) == 0) {
             return $this;

@@ -29,7 +29,6 @@ class DRMDetail extends BaseDRMDetail {
      * @return DRMCepage
      */
     public function getCepage() {
-
         return $this->getParent()->getParent();
     }
 

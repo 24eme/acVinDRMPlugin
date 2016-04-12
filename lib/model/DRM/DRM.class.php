@@ -8,8 +8,8 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
 
     const NOEUD_TEMPORAIRE = 'TMP';
     const DEFAULT_KEY = 'DEFAUT';
-    const DETAILS_KEY_ACQUITTE = 'ACQUITTE';
-    const DETAILS_KEY_SUSPENDU = 'SUSPENDU';
+    const DETAILS_KEY_SUSPENDU = 'details';
+    const DETAILS_KEY_ACQUITTE = 'detailsACQUITTE';
 
     protected $mouvement_document = null;
     protected $version_document = null;
@@ -102,7 +102,7 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
             return $p;
         }
 
-        $detail = $this->getOrAdd($hash)->addDetails($detailsKey)->addProduit($labels);
+        $detail = $this->getOrAdd($hash)->addDetailsNoeud($detailsKey)->addProduit($labels);
         $detail->produit_libelle = $detail->getLibelle($format = "%format_libelle% %la%");
 
         return $detail;
