@@ -118,7 +118,7 @@ $tabindex = $numProduit * 100 ;
                                 $class .= ($detail->getConfig()->get('sorties')->get($key)->recolte) ? " recolte_sortie " : "";
                                 ?>
                                 <li class="form-group form-group-xs <?php echo isVersionnerCssClass($form->getObject()->sorties, $key) ?>">
-                                    <?php if (preg_match('/^(vrac|contratbouteille$/', $key)): ?>
+                                    <?php if (preg_match('/^(vrac|contratbouteille)$/', $key)): ?>
                                         <div class="input-group">
                                             <span class="input-group-btn">
                                                 <a id="lien_sorties_vrac_details_<?php echo $detail->getHashForKey() ?>" data-toggle="modal" data-remote="false" data-target="#ajax-modal" href="<?php echo url_for("drm_vrac_details", $form->getObject()) ?>" class="btn btn-default btn-xs click-on-space-key" type="button" tabindex="<?php echo $tabindex; ?>"><span class="glyphicon glyphicon-list-alt"></span></a>
