@@ -8,8 +8,8 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
 
     const NOEUD_TEMPORAIRE = 'TMP';
     const DEFAULT_KEY = 'DEFAUT';
-    const DETAILS_KEY_ACQUITTE = 'ACQUITTE';
-    const DETAILS_KEY_SUSPENDU = 'SUSPENDU';
+    const DETAILS_KEY_SUSPENDU = 'details';
+    const DETAILS_KEY_ACQUITTE = 'detailsACQUITTE';
 
     protected $mouvement_document = null;
     protected $version_document = null;
@@ -102,7 +102,7 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
             return $p;
         }
 
-        $detail = $this->getOrAdd($hash)->addDetails($detailsKey)->addProduit($labels);
+        $detail = $this->getOrAdd($hash)->addDetailsNoeud($detailsKey)->addProduit($labels);
         $detail->produit_libelle = $detail->getLibelle($format = "%format_libelle% %la%");
 
         return $detail;
@@ -1203,7 +1203,7 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
     public function buildFavoris() {
         foreach ($this->drmDefaultFavoris() as $key => $value) {
             $keySplitted = split('/', $key);
-            $this->getOrAdd('favoris')->getOrAdd($keySplitted[0])->add($keySplitted[1], $value);
+            $this->getOrAdd('favoris')->getOrAdd($keySplitted[0])->getOrAdd($keySplitted[1])->add($keySplitted[2], $value);
         }
     }
 
@@ -1217,9 +1217,11 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
     public function drmDefaultFavoris() {
         $configuration = $this->getConfig();
         $configurationFields = array();
-        foreach ($configuration->libelle_detail_ligne as $type => $libelles) {
-            foreach ($libelles as $libelleHash => $libelle) {
-                $configurationFields[$type . '/' . $libelleHash] = $libelle->libelle;
+        foreach ($configuration->libelle_detail_ligne as $typedetail => $detail) {
+            foreach ($detail as $type => $libelles) {
+                foreach ($libelles as $libelleHash => $libelle) {
+                    $configurationFields[$typedetail.'/'.$type . '/' . $libelleHash] = $libelle->libelle;
+                }
             }
         }
         $drm_default_favoris = $configuration->get('mvts_favoris');

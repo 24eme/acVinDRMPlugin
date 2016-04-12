@@ -11,7 +11,6 @@ class DRMDetail extends BaseDRMDetail {
     }
 
     public function getLibelle($format = "%format_libelle%", $label_separator = ", ") {
-
         return $this->getCepage()->getConfig()->getLibelleFormat($this->labels->toArray(), $format, $label_separator);
     }
 
@@ -30,7 +29,6 @@ class DRMDetail extends BaseDRMDetail {
      * @return DRMCepage
      */
     public function getCepage() {
-
         return $this->getParent()->getParent();
     }
 
@@ -102,6 +100,11 @@ class DRMDetail extends BaseDRMDetail {
     public function getLabelsLibelle($format = "%la%", $label_separator = ", ") {
 
         return $this->getConfig()->getDocument()->formatLabelsLibelle($this->labels->toArray(), $format, $label_separator);
+    }
+
+    public function getLibelleTypeDRM() {
+
+        return $this->getParent()->getLibelleTypeDRM();
     }
 
     public function canSetStockDebutMois() {

@@ -20,10 +20,23 @@ class DRMDetails extends BaseDRMDetails {
         return $this->get($slug);
     }
 
-
     public function cleanNoeuds() {
         if (count($this) == 0) {
             return $this;
+        }
+
+        return null;
+    }
+
+    public function getLibelleTypeDRM() {
+        if($this->getKey() == DRM::DETAILS_KEY_SUSPENDU) {
+
+            return "Suspendu";
+        }
+
+        if($this->getKey() == DRM::DETAILS_KEY_ACQUITTE) {
+
+            return "Acquitté";
         }
 
         return null;

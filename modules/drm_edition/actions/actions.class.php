@@ -93,7 +93,7 @@ class drm_editionActions extends drmGeneriqueActions {
                                 "revision" => $this->drm->get('_rev'))
                 )));
             } else {
-                $this->redirect('drm_edition', array('sf_subject' => $this->drm, 'details' => $this->detailsKey));
+                $this->redirect('drm_edition_details', array('sf_subject' => $this->drm, 'details' => $this->detailsKey));
             }
         }
 
@@ -158,7 +158,8 @@ class drm_editionActions extends drmGeneriqueActions {
     }
 
     private function loadFavoris() {
-        $this->favoris = $this->drm->getAllFavoris();
+        $detail = $this->getRequest()->getParameter('details');
+        $this->favoris = $this->drm->getAllFavoris()->get($detail);
     }
 
 }
