@@ -48,9 +48,13 @@ class DRMProduitsChoiceForm extends acCouchdbObjectForm {
                 
             }
             if (preg_match('/^acquitte(.*)/', $key, $matches)) {
+                $key = str_replace('-', '/', $matches[1]);
                 if ($value) {
-                	$key = str_replace('-', '/', $matches[1]);
                 	$this->_drm->addProduit($this->_drm->get($key)->getCepage()->getHash(), DRM::DETAILS_KEY_ACQUITTE, array());
+                } else {
+                	if ($this->_drm->get($key)->getCepage()->exist(DRM::DETAILS_KEY_ACQUITTE)) {
+                		$this->_drm->get($key)->getCepage()->remove(DRM::DETAILS_KEY_ACQUITTE);
+                	}
                 }
                 
             }
@@ -67,7 +71,6 @@ class DRMProduitsChoiceForm extends acCouchdbObjectForm {
                 $this->all_checked = false;
             }
             if ($produit->getCepage()->exist(DRM::DETAILS_KEY_ACQUITTE)) {
-            	exit;
                 $this->setDefault('acquitte' . $produit->getHashForKey(), true);
             }
         }
