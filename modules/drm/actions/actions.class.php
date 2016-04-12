@@ -199,6 +199,7 @@ class drmActions extends drmGeneriqueActions {
         $identifiant = $request->getParameter('identifiant');
         $periode = $request->getParameter('periode');
         $drm = DRMClient::getInstance()->createDoc($identifiant, $periode, $isTeledeclarationMode);
+        $drm->loadAllProduits();
         $drm->save();
         if ($isTeledeclarationMode) {
             $this->redirect('drm_choix_produit', $drm);
