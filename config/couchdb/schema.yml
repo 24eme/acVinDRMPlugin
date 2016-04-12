@@ -506,7 +506,11 @@ DRM:
               type: collection
               definition:
                 fields:
-                  '*': { }
+                  '*':
+                    type: collection
+                    definition:
+                      fields:
+                        '*': { }
       documents_annexes:
         type: collection
         required: true
