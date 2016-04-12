@@ -6,10 +6,12 @@
 
 class DRMESDetailVrac extends BaseDRMESDetailVrac {
 
+    const IDENTIFIANT_SANS_CONTRAT = "SANSCONTRAT";
+
     protected $vrac = null;
 
     public function getProduitDetail() {
-        
+
         return $this->getParent()->getProduitDetail();
     }
 
@@ -21,7 +23,16 @@ class DRMESDetailVrac extends BaseDRMESDetailVrac {
         return $this->vrac;
     }
 
+    public function isSansContrat() {
+
+        return $this->identifiant == self::IDENTIFIANT_SANS_CONTRAT;
+    }
+
     public function getIdentifiantLibelle() {
+        if($this->isSansContrat()) {
+
+            return null;
+        }
 
         return $this->getVrac()->getNumeroArchive();
     }
