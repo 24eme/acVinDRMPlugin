@@ -247,7 +247,7 @@ abstract class _DRMTotal extends acCouchdbDocumentTree {
         $noeuds = array();
 
         foreach($this->getChildrenNode() as $key => $item) {
-            if($item instanceof _DRMTotal) {
+            if($item instanceof _DRMTotal || $item instanceof DRMDetails) {
                 $noeud = $item->cleanNoeuds();
                 if(isset($noeud)) {
                     $noeuds[] = $noeud;
