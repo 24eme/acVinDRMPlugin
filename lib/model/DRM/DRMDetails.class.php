@@ -7,7 +7,7 @@
 class DRMDetails extends BaseDRMDetails {
 
     public function getConfigDetails() {
-        return $this->getDocument()->getConfig()->declaration->detail;
+        return $this->getDocument()->getConfig()->declaration->get($this->getKey());
     }
 
     public function getProduit($labels = array()) {
