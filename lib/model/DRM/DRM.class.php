@@ -37,7 +37,7 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
         $this->declarant_document = new DeclarantDocument($this);
         $this->archivage_document = new ArchivageDocument($this);
     }
-    
+
     public function loadAllProduits() {
     	$produits = $this->getConfigProduits(true);
     	if (!is_null($produits)) {
