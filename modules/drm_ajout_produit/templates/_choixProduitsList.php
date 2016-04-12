@@ -7,7 +7,7 @@
                     <tr>
                         <th class="col-xs-6 text-left">Produits
                         </th>
-                        <th class="col-xs-3 text-center">Mouvements à déclarer ce mois</th>
+                        <th class="col-xs-3 text-center">Déclarer des mouvements en droit suspendu</th>
                         <th class="col-xs-3 text-center">Déclarer des mouvements en droit acquitté</th>
                     </tr>
                 </thead>

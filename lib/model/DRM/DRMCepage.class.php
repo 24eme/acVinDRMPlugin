@@ -8,7 +8,7 @@ class DRMCepage extends BaseDRMCepage {
 
     public function getChildrenNode() {
 
-        return $this->filter('^details.*');
+        return $this->filter('^details');
     }
 
     public function getCouleur() {

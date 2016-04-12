@@ -66,9 +66,8 @@ class DRMProduitsChoiceForm extends acCouchdbObjectForm {
         $this->all_checked = true;
         parent::updateDefaultsFromObject();
         foreach ($this->_produits as $produit) {
-            if ($produit->getCepage()->exist('no_movements') && $produit->getCepage()->no_movements) {
-                $this->setDefault('produit' . $produit->getHashForKey(), false);
-                $this->all_checked = false;
+            if ($produit->getCepage()->exist('no_movements') && !$produit->getCepage()->no_movements) {
+                $this->setDefault('produit' . $produit->getHashForKey(), true);
             }
             if ($produit->getCepage()->exist(DRM::DETAILS_KEY_ACQUITTE)) {
                 $this->setDefault('acquitte' . $produit->getHashForKey(), true);
