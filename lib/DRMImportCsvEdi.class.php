@@ -195,7 +195,7 @@ class DRMImportCsvEdi extends DRMCsvEdi {
             $confDetailMvt = $this->mouvements[$cat_mouvement][$type_mouvement];
 
             if (!$just_check) {
-                $drmDetails = $this->drm->addProduit($founded_produit->getHash(), $type_drm);
+                $drmDetails = $this->drm->addProduit($founded_produit->getHash(), $this->getDetailsKeyFromDRMType($drm_type));
 
                 $detailTotalVol = round(floatval($csvRow[self::CSV_CAVE_VOLUME]), 2);
                 $volume = round(floatval($csvRow[self::CSV_CAVE_VOLUME]), 2);
@@ -419,6 +419,20 @@ class DRMImportCsvEdi extends DRMCsvEdi {
                     break;
             }
         }
+    }
+
+    private function getDetailsKeyFromDRMType($drmType) {
+        if($drmType == "SUSPENDU") {
+
+            return DRM::DETAILS_KEY_SUSPENDU;
+        }
+
+        if($drmType == "ACQUITTE") {
+
+            return DRM::DETAILS_KEY_ACQUITTE;
+        }
+
+        throw new sfException(sprintf("Le type de DRM \"%s\" n'est pas connu", $drmType));
     }
 
     private function findContratDocId($csvRow) {
