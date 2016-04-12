@@ -178,6 +178,7 @@ class DRMImportCsvEdi extends DRMCsvEdi {
                 continue;
             }
 
+            $type_drm = KeyInflector::slugify($csvRow[self::CSV_CAVE_TYPE_MOUVEMENT]);
             $cat_mouvement = KeyInflector::slugify($csvRow[self::CSV_CAVE_CATEGORIE_MOUVEMENT]);
             $type_mouvement = KeyInflector::slugify($csvRow[self::CSV_CAVE_TYPE_MOUVEMENT]);
 
@@ -194,7 +195,7 @@ class DRMImportCsvEdi extends DRMCsvEdi {
             $confDetailMvt = $this->mouvements[$cat_mouvement][$type_mouvement];
 
             if (!$just_check) {
-                $drmDetails = $this->drm->addProduit($founded_produit->getHash());
+                $drmDetails = $this->drm->addProduit($founded_produit->getHash(), $type_drm);
 
                 $detailTotalVol = round(floatval($csvRow[self::CSV_CAVE_VOLUME]), 2);
                 $volume = round(floatval($csvRow[self::CSV_CAVE_VOLUME]), 2);
@@ -206,7 +207,7 @@ class DRMImportCsvEdi extends DRMCsvEdi {
                 if ($confDetailMvt->hasDetails()) {
                     $detailTotalVol += floatval($drmDetails->getOrAdd($cat_key)->getOrAdd($type_key));
 
-                    if ($type_key == 'export') {
+                    if (preg_match("/^export/", $type_key)) {
                         $pays = ConfigurationClient::getInstance()->findCountry($csvRow[self::CSV_CAVE_EXPORTPAYS]);
                         $detailNode = $drmDetails->getOrAdd($cat_key)->getOrAdd($type_key . '_details')->add($pays);
                         if ($detailNode->volume) {
