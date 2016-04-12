@@ -33,6 +33,7 @@ class DRMClient extends acCouchdbClient {
     const TYPE_DRM_SUSPENDU = 'SUSPENDU';
     const TYPE_DRM_ACQUITTE = 'ACQUITTE';
 
+    public static $correspondance_types = array('Suspendu' => DRM::DETAILS_KEY_SUSPENDU, 'Acquitté' => DRM::DETAILS_KEY_ACQUITTE);
     public static $drm_etapes = array(self::ETAPE_CHOIX_PRODUITS, self::ETAPE_SAISIE_SUSPENDU, self::ETAPE_SAISIE_ACQUITTE, self::ETAPE_CRD, self::ETAPE_ADMINISTRATION, self::ETAPE_VALIDATION);
     public static $drm_crds_couleurs = array(self::DRM_VERT => 'Vert', self::DRM_BLEU => 'Bleu', self::DRM_LIEDEVIN => 'Lie de vin');
     public static $drm_max_favoris_by_types_mvt = array(self::DRM_TYPE_MVT_ENTREES => 3, self::DRM_TYPE_MVT_SORTIES => 6);
