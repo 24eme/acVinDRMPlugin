@@ -1203,7 +1203,7 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
     public function buildFavoris() {
         foreach ($this->drmDefaultFavoris() as $key => $value) {
             $keySplitted = split('/', $key);
-            $this->getOrAdd('favoris')->getOrAdd($keySplitted[0])->add($keySplitted[1], $value);
+            $this->getOrAdd('favoris')->getOrAdd($keySplitted[0])->getOrAdd($keySplitted[1])->add($keySplitted[2], $value);
         }
     }
 
@@ -1217,9 +1217,11 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
     public function drmDefaultFavoris() {
         $configuration = $this->getConfig();
         $configurationFields = array();
-        foreach ($configuration->libelle_detail_ligne as $type => $libelles) {
-            foreach ($libelles as $libelleHash => $libelle) {
-                $configurationFields[$type . '/' . $libelleHash] = $libelle->libelle;
+        foreach ($configuration->libelle_detail_ligne as $typedetail => $detail) {
+            foreach ($detail as $type => $libelles) {
+                foreach ($libelles as $libelleHash => $libelle) {
+                    $configurationFields[$typedetail.'/'.$type . '/' . $libelleHash] = $libelle->libelle;
+                }
             }
         }
         $drm_default_favoris = $configuration->get('mvts_favoris');

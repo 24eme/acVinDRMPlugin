@@ -158,7 +158,8 @@ class drm_editionActions extends drmGeneriqueActions {
     }
 
     private function loadFavoris() {
-        $this->favoris = $this->drm->getAllFavoris();
+        $detail = $this->getRequest()->getParameter('details');
+        $this->favoris = $this->drm->getAllFavoris()->get($detail);
     }
 
 }
