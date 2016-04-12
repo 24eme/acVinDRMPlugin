@@ -20,7 +20,7 @@
 		<?php foreach($details as $detail): ?>
 			<tr>
 				<td><a href="#tab=mouvements&filtre=<?php echo strtolower($detail->getLibelle(ESC_RAW)); ?>"><?php echo $detail->getLibelle(ESC_RAW) ?></a></td>
-			<td class="text-center"><?php echo $detail->getLibelleTypeDRM() ?></td>
+			<td class="text-center"><?php echo $detail->getTypeDRMLibelle() ?></td>
                 <td class="text-right <?php echo isVersionnerCssClass($detail, 'total_debut_mois') ?>"><strong><?php echoFloat($detail->total_debut_mois) ?></strong>&nbsp;<span class="unite">hl</span>&nbsp;</td><td class="<?php echo isVersionnerCssClass($detail, 'total_debut_mois') ?>">(<?php echoFloat($detail->stocks_debut->dont_revendique) ?>&nbsp;<span class="unite">hl</span>)</td>
 				<td class="text-right <?php echo isVersionnerCssClass($detail, 'total_entrees') ?>"><?php echoFloat($detail->total_entrees) ?>&nbsp;<span class="unite">hl</span></td>
                                 <td class="<?php echo isVersionnerCssClass($detail, 'total_entrees_revendique') ?>">&nbsp;(<?php echoFloat($detail->total_entrees_revendique) ?>&nbsp;<span class="unite">hl</span>)</td>

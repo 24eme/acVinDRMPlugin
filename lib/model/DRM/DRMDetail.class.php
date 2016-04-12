@@ -102,9 +102,14 @@ class DRMDetail extends BaseDRMDetail {
         return $this->getConfig()->getDocument()->formatLabelsLibelle($this->labels->toArray(), $format, $label_separator);
     }
 
-    public function getLibelleTypeDRM() {
+    public function getTypeDRM() {
 
-        return $this->getParent()->getLibelleTypeDRM();
+        return $this->getParent()->getTypeDRM();
+    }
+
+    public function getTypeDRMLibelle() {
+
+        return $this->getParent()->getTypeDRMLibelle();
     }
 
     public function canSetStockDebutMois() {
@@ -330,6 +335,8 @@ class DRMDetail extends BaseDRMDetail {
             }
             $mouvement = DRMMouvement::freeInstance($this->getDocument());
             $mouvement->produit_hash = $this->getCepage()->getConfig()->getHash();
+            $mouvement->type_drm = $this->getTypeDRM();
+            $mouvement->type_drm_libelle = $this->getTypeDRMLibelle();
             $mouvement->facture = 0;
             $mouvement->region = $this->getDocument()->region;
             $mouvement->cvo = $this->getCVOTaux();
