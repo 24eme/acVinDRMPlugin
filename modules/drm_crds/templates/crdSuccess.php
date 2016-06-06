@@ -61,7 +61,7 @@
                     <div class="col-xs-4 text-center">
                         <a class="btn btn-default" href="#drm_delete_popup">
                             <span>Supprimer la DRM</span>
-                        </a> 
+                        </a>
                     </div>
                     <div class="col-xs-4 text-right">
                         <button type="submit" class="btn btn-success">Étape suivante <span class="glyphicon glyphicon-chevron-right"></span></button>

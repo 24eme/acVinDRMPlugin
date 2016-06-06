@@ -15,17 +15,17 @@
                     <?php if (count($certificationProduits->produits)): ?>
                         <?php foreach ($certificationProduits->produits as $produit):
                             ?>
-                            <tr>                        
+                            <tr>
                                 <td class="text-left"><?php echo $produit->getLibelle("%format_libelle%"); ?></td>
                                 <td class="text-center"><?php echo $form['produit' . $produit->getHashForKey()]->render(); ?></td>
                                 <td class="text-center"><?php echo $form['acquitte' . $produit->getHashForKey()]->render(); ?></td>
-                            </tr>  
+                            </tr>
                             <?php ?>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <tr>                        
-                            <td class="text-center" colspan="2"><em>Vous n'avez pas de produit déclaré en catégorie <?php echo $certificationProduits->certification_libelle; ?></em></td>
-                        </tr>  
+                        <tr>
+                            <td class="text-center" colspan="3"><em>Vous n'avez pas de produit déclaré en catégorie <?php echo $certificationProduits->certification_libelle; ?></em></td>
+                        </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
