@@ -10,7 +10,8 @@
         'favoris' => $favoris,
         'formFavoris' => $formFavoris,
         'isTeledeclarationMode' => $isTeledeclarationMode,
-        'detailsNodes' => $detailsNodes));
+        'detailsNodes' => $detailsNodes,
+        'detail' => $detail));
     ?>
         <div id="col_saisies" class="col-xs-8 well" style="overflow-x: auto; position: relative;" >
 
