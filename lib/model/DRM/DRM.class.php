@@ -10,7 +10,7 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
     const DEFAULT_KEY = 'DEFAUT';
     const DETAILS_KEY_SUSPENDU = 'details';
     const DETAILS_KEY_ACQUITTE = 'detailsACQUITTE';
-    
+
 
     protected $mouvement_document = null;
     protected $version_document = null;

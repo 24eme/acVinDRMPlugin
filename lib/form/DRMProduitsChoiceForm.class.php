@@ -45,7 +45,7 @@ class DRMProduitsChoiceForm extends acCouchdbObjectForm {
                 $key = str_replace('-', '/', $matches[1]);
                 $this->_drm->get($key)->getCepage()->add('no_movements', ! $value);
                 $this->_drm->etape = DRMClient::ETAPE_SAISIE;
-                
+
             }
             if (preg_match('/^acquitte(.*)/', $key, $matches)) {
                 $key = str_replace('-', '/', $matches[1]);
@@ -56,7 +56,7 @@ class DRMProduitsChoiceForm extends acCouchdbObjectForm {
                 		$this->_drm->get($key)->getCepage()->remove(DRM::DETAILS_KEY_ACQUITTE);
                 	}
                 }
-                
+
             }
         }
         $this->_drm->save();
@@ -66,7 +66,7 @@ class DRMProduitsChoiceForm extends acCouchdbObjectForm {
         $this->all_checked = true;
         parent::updateDefaultsFromObject();
         foreach ($this->_produits as $produit) {
-            if ($produit->getCepage()->exist('no_movements') && !$produit->getCepage()->no_movements) {
+            if (!$produit->getCepage()->exist('no_movements') || !$produit->getCepage()->no_movements) {
                 $this->setDefault('produit' . $produit->getHashForKey(), true);
             }
             if ($produit->getCepage()->exist(DRM::DETAILS_KEY_ACQUITTE)) {
@@ -74,7 +74,7 @@ class DRMProduitsChoiceForm extends acCouchdbObjectForm {
             }
         }
     }
-    
+
     public function isAllChecked() {
         return $this->all_checked;
     }
