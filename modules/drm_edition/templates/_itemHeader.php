@@ -3,7 +3,9 @@ $favoris_entrees = $favoris->entrees;
 $favoris_sorties = $favoris->sorties;
 ?>
 <div class="col-xs-4">
-    <form action="<?php echo url_for('drm_choix_favoris', $formFavoris->getObject()) ?>" id="colonne_intitules" method="post">
+    <form action="<?php echo url_for('drm_choix_favoris', array('identifiant' => $formFavoris->getObject()->getIdentifiant(),
+    'periode_version' => $formFavoris->getObject()->getPeriodeAndVersion(),
+    'details' => $detailsNodes->getKey())) ?>" id="colonne_intitules" method="post">
         <?php echo $formFavoris->renderHiddenFields(); ?>
         <?php echo $formFavoris->renderGlobalErrors(); ?>
         <div class="head" style="margin-top: 37px;"></div>
@@ -38,9 +40,8 @@ $favoris_sorties = $favoris->sorties;
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </ul>
-
                 <div class="groupe no_favoris" data-groupe-id="3">
-                    <p style="height:22px;" class="extendable form-group form-group-xs"><strong>Autres entrées</strong><span style="margin-top: 5px;" class="glyphicon glyphicon-chevron-down pull-right"></span></p>
+                    <p style="height:22px; cursor: pointer;" class="extendable form-group form-group-xs"><strong>Autres entrées</strong><span style="margin-top: 5px;" class="glyphicon glyphicon-chevron-down pull-right"></span></p>
                     <ul class="list-unstyled" style="display: none;">
                         <?php foreach ($detailsNodes->getEntreesSorted() as $key => $item): ?>
                             <?php if (!$favoris_entrees->exist($key)): ?>
@@ -58,7 +59,7 @@ $favoris_sorties = $favoris->sorties;
             </div>
 
             <div class="list-group-item list-group-item-xs groupe groupe_ouvert groupe_bloque favoris" data-groupe-id="4">
-                <h4 style="height:22px;" class="form-group form-group-xs">Sorties</h4>
+                <h4 style="height:22px; " class="form-group form-group-xs">Sorties</h4>
                 <ul class="list-unstyled">
                     <?php foreach ($detailsNodes->getSortiesSorted() as $key => $item): ?>
                         <?php if ($favoris_sorties->exist($key)): ?>
@@ -72,7 +73,7 @@ $favoris_sorties = $favoris->sorties;
                     <?php endforeach; ?>
                 </ul>
                 <div class="groupe no_favoris" data-groupe-id="5">
-                    <p style="height:22px;" class="extendable form-group form-group-xs"><strong>Autres sorties</strong><span style="margin-top: 5px;" class="glyphicon glyphicon-chevron-down pull-right"></span></p>
+                    <p style="height:22px; cursor: pointer;" class="extendable form-group form-group-xs"><strong>Autres sorties</strong><span style="margin-top: 5px;" class="glyphicon glyphicon-chevron-down pull-right"></span></p>
                     <ul class="list-unstyled" style="display: none;">
                         <?php foreach ($detailsNodes->getSortiesSorted() as $key => $item): ?>
                             <?php if (!$favoris_sorties->exist($key)): ?>

@@ -12,7 +12,7 @@ class drm_editionActions extends drmGeneriqueActions {
         $this->initSocieteAndEtablissementPrincipal();
         $this->loadFavoris();
         $this->initDeleteForm();
-        $this->formFavoris = new DRMFavorisForm($this->drm);
+        $this->formFavoris = new DRMFavorisForm($this->drm,array('details' => $this->getRequest()->getParameter('details')));
         $this->formValidation = new DRMMouvementsValidationForm($this->drm, array('isTeledeclarationMode' => $this->isTeledeclarationMode));
         $this->detailsNodes = $this->config->get($drmdetailtype);
 
@@ -38,7 +38,7 @@ class drm_editionActions extends drmGeneriqueActions {
         $this->isTeledeclarationMode = $this->isTeledeclarationDrm();
         $this->loadFavoris();
         $this->initDeleteForm();
-        $this->formFavoris = new DRMFavorisForm($this->drm);
+        $this->formFavoris = new DRMFavorisForm($this->drm, array('details' => $this->getRequest()->getParameter('details')));
         $this->formValidation = new DRMMouvementsValidationForm($this->drm, array('isTeledeclarationMode' => $this->isTeledeclarationMode));
         $this->detail = $this->getRoute()->getDRMDetail();
         $this->detailsNodes = $this->detail->getConfig();
@@ -143,10 +143,11 @@ class drm_editionActions extends drmGeneriqueActions {
 
     public function executeChoixFavoris(sfWebRequest $request) {
         $this->drm = $this->getRoute()->getDRM();
+        $details = (!$request->getParameter('details'))? 'details' : $request->getParameter('details');
         if (!$this->drm->exist('favoris')) {
             $this->drm->buildFavoris();
         }
-        $form = new DRMFavorisForm($this->drm);
+        $form = new DRMFavorisForm($this->drm, array('details' => $details));
         if ($request->isMethod(sfRequest::POST)) {
             $form->bind($request->getParameter($form->getName()));
             if ($form->isValid()) {
