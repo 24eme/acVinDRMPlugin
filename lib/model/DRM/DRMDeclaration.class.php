@@ -77,4 +77,28 @@ class DRMDeclaration extends BaseDRMDeclaration {
         return $produitsDetailsByCertifications;
     }
 
+    public function getProduitsDetailsByCertificationsForPdf($isTeledeclarationMode = false, $detailsKey = null){
+
+      $produitsDetailsByCertifications = $this->getProduitsDetailsByCertifications($isTeledeclarationMode, $detailsKey);
+
+      $produitsDetailsByCertificationsForPdf = array();
+      foreach ($produitsDetailsByCertifications as $keyCertif => $produitsByCertif) {
+        if(!count($produitsByCertif->produits)){
+          continue;
+        }
+        if(!array_key_exists($detailsKey,$produitsDetailsByCertificationsForPdf)){
+          $produitsDetailsByCertificationsForPdf[$detailsKey] = array();
+        }
+        $produitsDetailsByCertificationsForPdf[$detailsKey][$keyCertif] = $produitsByCertif;
+        $produits = array();
+        foreach ($produitsByCertif->produits as $hash => $produit) {
+          if(!$produit->hasStockEpuise()){
+            $produits[$hash] = $produit;
+          }
+        }
+        $produitsDetailsByCertificationsForPdf[$detailsKey][$keyCertif]->produits = $produits;
+      }
+      return $produitsDetailsByCertificationsForPdf;
+    }
+
 }

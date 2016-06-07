@@ -14,7 +14,7 @@
 <div class="row">
     <div class="col-xs-12">
         <?php if ($isTeledeclarationMode): ?>
-            <?php if ($drm->isTeledeclare()): ?>  
+            <?php if ($drm->isTeledeclare()): ?>
                 <a href="<?php echo url_for('drm_pdf', $drm); ?>" class="btn btn-success pull-right"><span>Télécharger le PDF</span></a>
             <?php endif; ?>
         <?php endif; ?>
@@ -29,7 +29,7 @@
 
 
         <!--<div id="drm_validation_coordonnees">
-            <div class="drm_validation_societe">    
+            <div class="drm_validation_societe">
                 <?php //include_partial('drm_visualisation/societe_infos', array('drm' => $drm, 'isModifiable' => false)); ?>
             </div>
             <div class="drm_validation_etablissement">
@@ -45,7 +45,7 @@
                         <li><?php echo MessagesClient::getInstance()->getMessage('msg_rectificatif_suivante') ?></li>
                     </ul>
                 </div>
-            <?php endif; ?>   
+            <?php endif; ?>
 
             <?php if (!$drm->isMaster()): ?>
                 <div class="alert alert-warning">
@@ -70,20 +70,20 @@
         </div>
     </div>
     <br/>
-<?php else: ?> 
-    <?php include_partial('drm_visualisation/recap_crds', array('drm' => $drm)) ?>  
-    <?php include_partial('drm_visualisation/recapAnnexes', array('drm' => $drm)) ?>  
-<?php endif; ?>   
+<?php else: ?>
+    <?php include_partial('drm_visualisation/recap_crds', array('drm' => $drm)) ?>
+    <?php include_partial('drm_visualisation/recapAnnexes', array('drm' => $drm)) ?>
+<?php endif; ?>
 <?php include_partial('drm_visualisation/recapDroits', array('drm' => $drm, 'recapCvos' => $recapCvos, 'isTeledeclarationMode' => $isTeledeclarationMode)) ?>
 <div class="row">
     <div class="col-xs-4">
         <a href="<?php echo url_for('drm_etablissement', array('identifiant' => $drm->identifiant)); ?>" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span> Retour à mon espace DRM</a>
     </div>
-    <?php if ($isTeledeclarationMode) : ?>
+    <?php //if ($isTeledeclarationMode) : ?>
         <div class="col-xs-4 text-center">
             <a href="<?php echo url_for('drm_pdf', $drm); ?>" class="btn btn-success">Télécharger le PDF</a>
         </div>
-    <?php endif; ?>
+    <?php //endif; ?>
 </div>
 <?php
 include_partial('drm/colonne_droite', array('drm' => $drm, 'isTeledeclarationMode' => $isTeledeclarationMode));
