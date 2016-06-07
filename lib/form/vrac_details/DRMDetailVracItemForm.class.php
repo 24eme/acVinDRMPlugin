@@ -16,7 +16,7 @@ class DRMDetailVracItemForm extends DRMESDetailsItemForm {
             }
         }
 
-        return array_merge(array(DRMESDetailVrac::IDENTIFIANT_SANS_CONTRAT => "Pas de numéro de contrat"), $vracs);
+        return array_merge(array("" => "", DRMESDetailVrac::CONTRAT_VRAC_SANS_NUMERO => "Contrat Vrac (Sans le numéro)", DRMESDetailVrac::CONTRAT_BOUTEILLE_SANS_NUMERO => "Contrat Bouteille (Sans le numéro)"), $vracs);
     }
 
     public function getPostValidatorClass() {

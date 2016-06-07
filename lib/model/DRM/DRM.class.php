@@ -179,31 +179,6 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
         return $vracs;
     }
 
-    public function getDetailsVracs() {
-        $vracs = array();
-        foreach ($this->getProduitsDetails() as $d) {
-            if ($vrac_details = $d->sorties->vrac_details) {
-                foreach ($vrac_details as $vracdetail) {
-                    $vracs[] = $vracdetail;
-                }
-            }
-        }
-
-        return $vracs;
-    }
-
-    public function getDetailsExports() {
-        $exports = array();
-        foreach ($this->getProduitsDetails() as $d) {
-            if ($export_details = $d->sorties->export_details) {
-                foreach ($export_details as $exportdetail) {
-                    $exports[] = $exportdetail;
-                }
-            }
-        }
-        return $exports;
-    }
-
     public function generateByDS(DS $ds) {
         $this->identifiant = $ds->identifiant;
         foreach ($ds->declarations as $produit) {
@@ -663,27 +638,25 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
 
     public function save() {
         $this->region = $this->getEtablissement()->region;
-        $listEntrees = $listSorties = null;
+        $listEntrees = $listSorties = array();
         $key_to_remove = array();
-        foreach ($this->getProduits() as $produit) {
-            foreach ($produit->getProduitsDetails() as $produit_hash => $detail) {
-                if (!$listEntrees && !$listSorties) {
-                    $listEntrees = array_keys($detail->getConfig()->getEntreesSorted());
-                    $listSorties = array_keys($detail->getConfig()->getSortiesSorted());
-                }
-                foreach ($detail->entrees as $keyEntree => $valueEntree) {
-                    if ($valueEntree && !in_array($keyEntree, $listEntrees)) {
-                        $key_to_remove[] = $produit_hash.'/entrees/'.$keyEntree;
+        foreach ($this->getProduitsDetails() as $detail) {
+            if (!array_key_exists($detail->getConfig()->getHash(), $listEntrees) && !array_key_exists($detail->getConfig()->getHash(), $listSorties)) {
+                $listEntrees[$detail->getConfig()->getHash()] = array_keys($detail->getConfig()->getEntreesSorted());
+                $listSorties[$detail->getConfig()->getHash()] = array_keys($detail->getConfig()->getSortiesSorted());
+            }
+            foreach ($detail->entrees as $keyEntree => $valueEntree) {
+                if ($valueEntree && !in_array($keyEntree, $listEntrees[$detail->getConfig()->getHash()])) {
+                    $key_to_remove[] = $produit_hash.'/entrees/'.$keyEntree;
 
-                    }
                 }
-                foreach ($detail->sorties as $keySortie => $valueSortie) {
-                    if ($valueSortie instanceof DRMESDetails) {
-                        continue;
-                    }
-                    if ($valueSortie && !in_array($keySortie, $listSorties)) {
-                       $key_to_remove[] = $produit_hash.'/sorties/'.$keySortie;
-                    }
+            }
+            foreach ($detail->sorties as $keySortie => $valueSortie) {
+                if ($valueSortie instanceof DRMESDetails) {
+                    continue;
+                }
+                if ($valueSortie && !in_array($keySortie, $listSorties[$detail->getConfig()->getHash()])) {
+                   $key_to_remove[] = $detail->getHash().'/sorties/'.$keySortie;
                 }
             }
         }
