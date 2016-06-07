@@ -122,7 +122,7 @@ $tabindex = $numProduit * 100 ;
                                         <?php $noeudDetailKey = strtolower($form->getObject()->sorties->getConfig()->get($key)->getDetails()); ?>
                                         <div class="input-group">
                                             <span class="input-group-btn">
-                                                <a id="lien_sorties_<?php echo $noeudDetailKey ?>_details_<?php echo $detail->getHashForKey() ?>" data-toggle="modal" data-remote="false" data-target="#ajax-modal" href="<?php echo url_for("drm_" .$noeudDetailKey."_details", $form->getObject()) ?>" class="btn btn-default btn-xs click-on-space-key" type="button" tabindex="<?php echo $tabindex; ?>"><span class="glyphicon glyphicon-list-alt"></span></a>
+                                                <a id="lien_sorties_<?php echo $noeudDetailKey ?>_details_<?php echo $detail->getHashForKey() ?>" data-toggle="modal" data-remote="false" data-target="#ajax-modal" href="<?php echo url_for("drm_" .$noeudDetailKey."_details", array('sf_subject' => $form->getObject(), 'cat_key' => 'sorties', 'key' => $key)) ?>" class="btn btn-default btn-xs click-on-space-key" type="button" tabindex="<?php echo $tabindex; ?>"><span class="glyphicon glyphicon-list-alt"></span></a>
                                             </span>
                                             <input type="text" id="input_sortie_<?php echo $noeudDetailKey ?>_<?php echo $detail->getHashForKey() ?>" data-hash="<?php echo $detail->getHash() ?>" data-pointer="#lien_sorties_<?php echo $noeudDetailKey ?>_details_<?php echo $detail->getHashForKey() ?>" class="btn_detail pointer input-float somme_detail bold_on_blur drm_input_details form-control no-state text-right <?php echo $class; ?>" readonly="readonly" value="<?php echoFloat($detail->sorties->get($key)); ?>" tabindex="-1" />
                                         </div>
@@ -151,10 +151,8 @@ $tabindex = $numProduit * 100 ;
                     <div class="groupe p_gris" data-groupe-id="5">
                         <p class="form-group form-group-xs extendable"></p>
                         <ul class="list-unstyled">
-                            <?php
-                            $isfirst = true;
-                            foreach ($form['sorties'] as $key => $subform):
-                                ?>
+                            <?php $isfirst = true; ?>
+                            <?php foreach ($form['sorties'] as $key => $subform): ?>
                                 <?php
                                 if (!$favoris_sorties->exist($key)):
                                     ?>
@@ -163,7 +161,7 @@ $tabindex = $numProduit * 100 ;
                                             <?php $noeudDetailKey = strtolower($form->getObject()->sorties->getConfig()->get($key)->getDetails()); ?>
                                             <div class="input-group">
                                                 <span class="input-group-btn">
-                                                    <a id="lien_sorties_<?php echo $noeudDetailKey ?>_details_<?php echo $detail->getHashForKey() ?>" data-toggle="modal" data-remote="false" data-target="#ajax-modal" href="<?php echo url_for("drm_" .$noeudDetailKey."_details", $form->getObject()) ?>" class="btn btn-default btn-xs click-on-space-key" type="button" tabindex="<?php echo $tabindex; ?>"><span class="glyphicon glyphicon-list-alt"></span></a>
+                                                    <a id="lien_sorties_<?php echo $noeudDetailKey ?>_details_<?php echo $detail->getHashForKey() ?>" data-toggle="modal" data-remote="false" data-target="#ajax-modal" href="<?php echo url_for("drm_" .$noeudDetailKey."_details", array('sf_subject' => $form->getObject(), 'cat_key' => 'sorties', 'key' => $key)) ?>" class="btn btn-default btn-xs click-on-space-key" type="button" tabindex="<?php echo $tabindex; ?>"><span class="glyphicon glyphicon-list-alt"></span></a>
                                                 </span>
                                                 <input type="text" id="input_sortie_<?php echo $noeudDetailKey ?>_<?php echo $detail->getHashForKey() ?>" data-hash="<?php echo $detail->getHash() ?>" data-pointer="#lien_sorties_<?php echo $noeudDetailKey ?>_details_<?php echo $detail->getHashForKey() ?>" class="btn_detail pointer input-float somme_detail bold_on_blur drm_input_details form-control no-state text-right <?php echo $class; ?>" readonly="readonly" value="<?php echoFloat($detail->sorties->get($key)); ?>" tabindex="-1" />
                                             </div>
@@ -186,10 +184,8 @@ $tabindex = $numProduit * 100 ;
                                             ?>
                                     <?php endif; ?>
                                     </li>
-                                    <?php
-                                endif;
-                                ?>
-<?php endforeach; ?>
+                                    <?php endif; ?>
+                        <?php endforeach; ?>
                         </ul>
                     </div>
                 </div>
