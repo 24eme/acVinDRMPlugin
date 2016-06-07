@@ -141,24 +141,18 @@ class DRMDetail extends BaseDRMDetail {
 
         $this->total_debut_mois = $this->stocks_debut->initial;
 
-        if ($this->sorties->exist('vrac_details')) {
-            $this->sorties->vrac = 0;
-            foreach ($this->sorties->vrac_details as $vrac_detail) {
-                $this->sorties->vrac+=$vrac_detail->volume;
+        foreach($this->sorties as $key => $item) {
+            if($item instanceof acCouchdbJson) {
+                continue;
+            }
+            if($this->sorties->getConfig()->get($key)->hasDetails()) {
+                $this->sorties->set($key, 0);
+                foreach ($this->sorties->get($key."_details") as $detail) {
+                    $this->sorties->set($key, $this->sorties->get($key) + $detail->volume);
+                }
             }
         }
-        if ($this->sorties->exist('export_details')) {
-            $this->sorties->export = 0;
-            foreach ($this->sorties->export_details as $export_detail) {
-                $this->sorties->export+=$export_detail->volume;
-            }
-        }
-        if ($this->sorties->exist('cooperative_details')) {
-            $this->sorties->cooperative = 0;
-            foreach ($this->sorties->cooperative_details as $cooperative_detail) {
-                $this->sorties->cooperative+=$cooperative_detail->volume;
-            }
-        }
+
         $this->total_entrees = $this->getTotalByKey('entrees', 'recolte');
         $this->total_sorties = $this->getTotalByKey('sorties', 'recolte');
 
