@@ -118,19 +118,13 @@ $tabindex = $numProduit * 100 ;
                                 $class .= ($detail->getConfig()->get('sorties')->get($key)->recolte) ? " recolte_sortie " : "";
                                 ?>
                                 <li class="form-group form-group-xs <?php echo isVersionnerCssClass($form->getObject()->sorties, $key) ?>">
-                                    <?php if (preg_match('/^(vrac|contratbouteille)$/', $key)): ?>
+                                    <?php if ($form->getObject()->sorties->getConfig()->get($key)->hasDetails()): ?>
+                                        <?php $noeudDetailKey = strtolower($form->getObject()->sorties->getConfig()->get($key)->getDetails()); ?>
                                         <div class="input-group">
                                             <span class="input-group-btn">
-                                                <a id="lien_sorties_vrac_details_<?php echo $detail->getHashForKey() ?>" data-toggle="modal" data-remote="false" data-target="#ajax-modal" href="<?php echo url_for("drm_vrac_details", $form->getObject()) ?>" class="btn btn-default btn-xs click-on-space-key" type="button" tabindex="<?php echo $tabindex; ?>"><span class="glyphicon glyphicon-list-alt"></span></a>
+                                                <a id="lien_sorties_<?php echo $noeudDetailKey ?>_details_<?php echo $detail->getHashForKey() ?>" data-toggle="modal" data-remote="false" data-target="#ajax-modal" href="<?php echo url_for("drm_" .$noeudDetailKey."_details", $form->getObject()) ?>" class="btn btn-default btn-xs click-on-space-key" type="button" tabindex="<?php echo $tabindex; ?>"><span class="glyphicon glyphicon-list-alt"></span></a>
                                             </span>
-                                            <input type="text" id="input_sortie_vrac_<?php echo $detail->getHashForKey() ?>" data-hash="<?php echo $detail->getHash() ?>" data-pointer="#lien_sorties_vrac_details_<?php echo $detail->getHashForKey() ?>" class="btn_detail pointer input-float somme_detail bold_on_blur drm_input_details form-control no-state text-right <?php echo $class; ?>" data-title="Details des contrats" readonly="readonly" value="<?php echoFloat($detail->sorties->vrac); ?>" tabindex="-1" />
-                                        </div>
-                                    <?php elseif (preg_match('/^export/', $key)): ?>
-                                        <div class="input-group">
-                                            <span class="input-group-btn">
-                                                <a id="lien_sorties_export_details_<?php echo $detail->getHashForKey() ?>" data-toggle="modal" data-remote="false" data-target="#ajax-modal" href="<?php echo url_for("drm_export_details", $form->getObject()) ?>" class="btn btn-default btn-xs btn_details click-on-space-key" type="button" tabindex="<?php echo $tabindex; ?>"><span class="glyphicon glyphicon-list-alt"></span></a>
-                                            </span>
-                                            <input type="text" id="input_sortie_export_<?php echo $detail->getHashForKey() ?>" data-hash="<?php echo $detail->getHash() ?>" data-pointer="#lien_sorties_export_details_<?php echo $detail->getHashForKey() ?>" class="pointer input-float somme_detail bold_on_blur drm_input_details form-control no-state text-right <?php echo $class; ?>" readonly="readonly" value="<?php echoFloat($detail->sorties->export); ?>" tabindex="-1" />
+                                            <input type="text" id="input_sortie_<?php echo $noeudDetailKey ?>_<?php echo $detail->getHashForKey() ?>" data-hash="<?php echo $detail->getHash() ?>" data-pointer="#lien_sorties_<?php echo $noeudDetailKey ?>_details_<?php echo $detail->getHashForKey() ?>" class="btn_detail pointer input-float somme_detail bold_on_blur drm_input_details form-control no-state text-right <?php echo $class; ?>" readonly="readonly" value="<?php echoFloat($detail->sorties->get($key)); ?>" tabindex="-1" />
                                         </div>
                                     <?php else: ?>
                                         <?php
@@ -165,23 +159,16 @@ $tabindex = $numProduit * 100 ;
                                 if (!$favoris_sorties->exist($key)):
                                     ?>
                                     <li class="form-group form-group-xs <?php echo isVersionnerCssClass($form->getObject()->sorties, $key) ?>">
-                                        <?php if (preg_match('/^(vrac|contratbouteille)$/', $key)): ?>
+                                        <?php if ($form->getObject()->sorties->getConfig()->get($key)->hasDetails()): ?>
+                                            <?php $noeudDetailKey = strtolower($form->getObject()->sorties->getConfig()->get($key)->getDetails()); ?>
                                             <div class="input-group">
                                                 <span class="input-group-btn">
-                                                    <a id="lien_sorties_vrac_details_<?php echo $detail->getHashForKey() ?>" data-toggle="modal" data-remote="false" data-target="#ajax-modal" href="<?php echo url_for("drm_vrac_details", $form->getObject()) ?>" class="btn btn-default btn-xs click-on-space-key" type="button" tabindex="<?php echo $tabindex; ?>" tabindex="<?php echo $tabindex; ?>"><span class="glyphicon glyphicon-list-alt"></span></a>
+                                                    <a id="lien_sorties_<?php echo $noeudDetailKey ?>_details_<?php echo $detail->getHashForKey() ?>" data-toggle="modal" data-remote="false" data-target="#ajax-modal" href="<?php echo url_for("drm_" .$noeudDetailKey."_details", $form->getObject()) ?>" class="btn btn-default btn-xs click-on-space-key" type="button" tabindex="<?php echo $tabindex; ?>"><span class="glyphicon glyphicon-list-alt"></span></a>
                                                 </span>
-                                                <input id="input_sortie_vrac_<?php echo $detail->getHashForKey() ?>" data-hash="<?php echo $detail->getHash() ?>" type="text" data-pointer="#lien_sorties_vrac_details_<?php echo $detail->getHashForKey() ?>" class="btn_detail pointer input-float somme_detail bold_on_blur drm_input_details form-control no-state text-right <?php echo $class; ?>" readonly="readonly" value="<?php echoFloat($detail->sorties->vrac); ?>" tabindex="-1" />
+                                                <input type="text" id="input_sortie_<?php echo $noeudDetailKey ?>_<?php echo $detail->getHashForKey() ?>" data-hash="<?php echo $detail->getHash() ?>" data-pointer="#lien_sorties_<?php echo $noeudDetailKey ?>_details_<?php echo $detail->getHashForKey() ?>" class="btn_detail pointer input-float somme_detail bold_on_blur drm_input_details form-control no-state text-right <?php echo $class; ?>" readonly="readonly" value="<?php echoFloat($detail->sorties->get($key)); ?>" tabindex="-1" />
                                             </div>
-                                        <?php elseif (preg_match('/^export/', $key)): ?>
-                                            <div class="input-group">
-                                                <span class="input-group-btn">
-                                                    <a id="lien_sorties_export_details_<?php echo $detail->getHashForKey() ?>" data-toggle="modal" data-remote="false" data-target="#ajax-modal" href="<?php echo url_for("drm_export_details", $form->getObject()) ?>" class="btn btn-default btn-xs click-on-space-key" type="button" tabindex="<?php echo $tabindex; ?>" tabindex="<?php echo $tabindex; ?>"><span class="glyphicon glyphicon-list-alt"></span></a>
-                                                </span>
-                                                <input type="text" id="input_sortie_export_<?php echo $detail->getHashForKey() ?>" data-hash="<?php echo $detail->getHash() ?>" data-pointer="#lien_sorties_export_details_<?php echo $detail->getHashForKey() ?>" class="pointer input-float somme_detail bold_on_blur drm_input_details form-control no-state text-right <?php echo $class; ?>" readonly="readonly" value="<?php echoFloat($detail->sorties->export); ?>" tabindex="-1" />
-                                            </div>
-                                        <?php
-                                        else:
-                                            $class = $subform->getWidget()->getAttribute('class') . ' somme_detail bold_on_blur ';
+                                        <?php else: ?>
+                                        <?php $class = $subform->getWidget()->getAttribute('class') . ' somme_detail bold_on_blur ';
                                             $class.= ($detail->getConfig()->get('sorties')->get($key)->revendique) ? " revendique_sortie " : "";
                                             $class.= ($detail->getConfig()->get('sorties')->get($key)->recolte) ? " recolte_sortie " : "";
                                             $isWritable = ($detail->getConfig()->get('sorties')->get($key)->writable && !$subform->getWidget()->getAttribute('readonly'));
