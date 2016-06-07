@@ -24,7 +24,7 @@ class drmGeneriqueActions extends sfActions {
             $this->redirect403();
         }
     }
-    
+
      protected function redirect403IfIsTeledeclaration() {
         if ($this->isTeledeclarationDrm()) {
             $this->redirect403();
@@ -45,26 +45,27 @@ class drmGeneriqueActions extends sfActions {
     protected function isTeledeclarationDrm() {
        return true;
     }
-    
+
     protected function initDeleteForm() {
         $this->deleteForm = new DRMDeleteForm($this->drm);
     }
-    
+
     protected function isUsurpationMode() {
         return $this->getUser()->isUsurpationCompte();
     }
-    
+
     protected function createMouvementsByProduits($mouvements) {
         $this->mouvementsByProduit = array();
         foreach ($mouvements as $mouvement) {
         	if (!isset($this->mouvementsByProduit[$mouvement->type_drm_libelle])) {
         		$this->mouvementsByProduit[$mouvement->type_drm_libelle] = array();
         	}
-            if (!array_key_exists($mouvement->produit_hash, $this->mouvementsByProduit)) {
+            if (!array_key_exists($mouvement->produit_hash, $this->mouvementsByProduit[$mouvement->type_drm_libelle])) {
                 $this->mouvementsByProduit[$mouvement->type_drm_libelle][$mouvement->produit_hash] = array();
             }
             $this->mouvementsByProduit[$mouvement->type_drm_libelle][$mouvement->produit_hash][] = $mouvement;
         }
+
         return $this->mouvementsByProduit;
     }
 
