@@ -30,6 +30,11 @@ class DRMCepage extends BaseDRMCepage {
         return $this->add($detailsKey);
     }
 
+    public function reorderByConf() {
+
+        return null;
+    }
+
     public function getProduitsDetails($teledeclarationMode = false, $detailsKey = null) {
         $details = array();
         foreach ($this->getChildrenNode() as $key => $items) {
