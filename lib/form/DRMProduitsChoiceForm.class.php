@@ -25,8 +25,15 @@ class DRMProduitsChoiceForm extends acCouchdbObjectForm {
 
     public function configure() {
         foreach ($this->_produits as $produit) {
+          $disabled=array();
+
             $this->setWidget('produit' . $produit->getHashForKey(), new sfWidgetFormInputCheckbox(array('value_attribute_value' => '1', 'default' => false)));
+
             $this->setWidget('acquitte' . $produit->getHashForKey(), new sfWidgetFormInputCheckbox(array('value_attribute_value' => '1', 'default' => false)));
+            if(preg_match("/USAGESINDUSTRIELS/",$produit->getHashForKey())){
+                $this->getWidget('acquitte' . $produit->getHashForKey())->setAttribute('disabled', 'disabled');
+              }
+
 
             $this->widgetSchema->setLabel('produit' . $produit->getHashForKey(), '');
             $this->widgetSchema->setLabel('acquitte' . $produit->getHashForKey(), '');

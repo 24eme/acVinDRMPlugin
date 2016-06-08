@@ -22,8 +22,8 @@ $hasDontRevendique = ConfigurationClient::getCurrent()->hasDontRevendique();
         <thead>
             <tr>
                 <th class="col-xs-1">Type</th>
-                <th class="col-xs-4">Produits</th>
-                <th class="col-xs-3">Mouvement</th>
+                <th class="col-xs-5">Produits</th>
+                <th class="col-xs-4">Mouvement</th>
                 <th class="col-xs-2"><span class="pull-right">Volume</span></th>
                 <?php if($hasDontRevendique): ?>
                   <th class="col-xs-2"><span class="pull-left">(dont revendiqué)</span></th>
@@ -63,7 +63,7 @@ $hasDontRevendique = ConfigurationClient::getCurrent()->hasDontRevendique();
                         <td <?php echo ($mouvement->volume > 0) ? ' class="positif"' : 'class="negatif"'; ?> >
                             <span class="pull-right"><?php echoSignedFloat($mouvement->volume); ?></span>
                         </td>
-                        <td></td>
+                      <?php if($hasDontRevendique): ?>  <td></td> <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
 

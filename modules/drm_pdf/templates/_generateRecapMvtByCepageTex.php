@@ -36,7 +36,7 @@ for ($index_page = 0; $index_page < $nb_pages; $index_page++):
         $nb_produits_per_page = $nb_produits - $nb_produits_displayed;
     }
     $size_col = 30;
-    $entete = '\begin{tabular}{C{20mm} p{48mm} |';
+    $entete = '\begin{tabular}{ C{68mm} |';
     for ($cpt_col = 0; $cpt_col < $nb_produits_per_page; $cpt_col++) {
         $entete .='C{' . $size_col . 'mm}|';
     }
@@ -44,7 +44,7 @@ for ($index_page = 0; $index_page < $nb_pages; $index_page++):
     if ($index_page > 0) {
         $libelleAppellationTitre .= ' (Suite)';
     }
-    $maxCol = 2 + $nb_produits_per_page;
+    $maxCol = 1 + $nb_produits_per_page;
     $index_last_produit = $index_first_produit + $nb_produits_per_page - 1;
     $produits_for_page = array();
     foreach (range($index_first_produit, $index_last_produit) as $indexProduit) {
@@ -66,8 +66,8 @@ for ($index_page = 0; $index_page < $nb_pages; $index_page++):
      * Entête des Produits
      */
     ?>
-    \cline{3-<?php echo $maxCol; ?>}
-    &
+    \cline{2-<?php echo $maxCol; ?>}
+    
     \begin{large}
     \textbf{<?php echo $libelleAppellationTitre; ?>}
     \end{large} &
@@ -85,7 +85,7 @@ for ($index_page = 0; $index_page < $nb_pages; $index_page++):
      */
     ?>
     \rowcolor{gray}
-    \multicolumn{2}{|c|}{ \small{\color{white}{\textbf{STOCK DÉBUT DE MOIS}} }} &
+    \multicolumn{1}{|c|}{ \small{\color{white}{\textbf{STOCK DÉBUT DE MOIS}} }} &
     <?php foreach ($produits_for_page as $counter => $produit): ?>
         \multicolumn{1}{r|}{  \small{\color{white}{\textbf{<?php echoFloatWithHl($produit->total_debut_mois); ?>}}}}
         <?php echo ($counter < count($produits_for_page) - 1) ? "&" : ''; ?>
@@ -102,8 +102,6 @@ for ($index_page = 0; $index_page < $nb_pages; $index_page++):
         <?php $entreeKey = $entree->key; ?>
         <?php if (!$cpt_entree): ?>
             \multicolumn{1}{|c}{\multirow{<?php echo count($mvtsEnteesForPdf); ?>}{20mm}{\small{\textbf{ENTREES DU MOIS}}}} &
-        <?php else: ?>
-            \multicolumn{1}{|c}{~} &
         <?php endif; ?>
 
         \multicolumn{1}{|l|}{  \small{<?php echo $entree->libelle; ?>} } &
@@ -113,7 +111,7 @@ for ($index_page = 0; $index_page < $nb_pages; $index_page++):
         <?php endforeach; ?>
         \\
         <?php if ((count($mvtsEnteesForPdf) - 1) != $cpt_entree): ?>
-            \cline{2-<?php echo $maxCol; ?>}
+            \cline{1-<?php echo $maxCol; ?>}
         <?php endif; ?>
     <?php endforeach; ?>
     \hline
@@ -124,7 +122,7 @@ for ($index_page = 0; $index_page < $nb_pages; $index_page++):
      */
     ?>
     \rowcolor{lightgray}
-    \multicolumn{2}{|r|}{ \small{\textbf{TOTAL ENTREES}} } &
+    \multicolumn{1}{|r|}{ \small{\textbf{TOTAL ENTREES}} } &
     <?php foreach ($produits_for_page as $counter => $produit): ?>
         \multicolumn{1}{r|}{   \small{\textbf{<?php echoFloatWithHl($produit->total_entrees); ?>}} }
         <?php echo ($counter < count($produits_for_page) - 1) ? "&" : ''; ?>
@@ -141,8 +139,6 @@ for ($index_page = 0; $index_page < $nb_pages; $index_page++):
         <?php $sortieKey = $sortie->key; ?>
         <?php if (!$cpt_sortie): ?>
             \multicolumn{1}{|c}{\multirow{<?php echo count($mvtsSortiesForPdf); ?>}{20mm}{\small{\textbf{SORTIES DU MOIS}}}} &
-        <?php else: ?>
-            \multicolumn{1}{|c}{~} &
         <?php endif; ?>
 
         \multicolumn{1}{|l|}{  \small{<?php echo $sortie->libelle; ?>} } &
@@ -152,7 +148,7 @@ for ($index_page = 0; $index_page < $nb_pages; $index_page++):
         <?php endforeach; ?>
         \\
         <?php if ((count($mvtsSortiesForPdf) - 1) != $cpt_entree): ?>
-            \cline{2-<?php echo $maxCol; ?>}
+            \cline{1-<?php echo $maxCol; ?>}
         <?php endif; ?>
     <?php endforeach; ?>
     \hline
@@ -163,7 +159,7 @@ for ($index_page = 0; $index_page < $nb_pages; $index_page++):
      */
     ?>
     \rowcolor{lightgray}
-    \multicolumn{2}{|r|}{ \small{\textbf{TOTAL SORTIES}} } &
+    \multicolumn{1}{|r|}{ \small{\textbf{TOTAL SORTIES}} } &
     <?php foreach ($produits_for_page as $counter => $produit): ?>
         \multicolumn{1}{r|}{   \small{\textbf{<?php echoFloatWithHl($produit->total_sorties); ?>}} }
         <?php echo ($counter < count($produits_for_page) - 1) ? "&" : ''; ?>
@@ -177,7 +173,7 @@ for ($index_page = 0; $index_page < $nb_pages; $index_page++):
      */
     ?>
     \rowcolor{gray}
-    \multicolumn{2}{|c|}{ \small{\color{white}{\textbf{STOCK FIN DE MOIS}} }} &
+    \multicolumn{1}{|c|}{ \small{\color{white}{\textbf{STOCK FIN DE MOIS}} }} &
     <?php foreach ($produits_for_page as $counter => $produit): ?>
         \multicolumn{1}{r|}{  \small{\color{white}{\textbf{<?php echoFloatWithHl($produit->stocks_fin->final); ?>}}}}
         <?php echo ($counter < count($produits_for_page) - 1) ? "&" : ''; ?>
