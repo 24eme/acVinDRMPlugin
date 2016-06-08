@@ -36,16 +36,18 @@ class DRMCsvEdi extends CsvFile {
     const CSV_CRD_GENRE = 4;
     const CSV_CRD_COULEUR = 5;
     const CSV_CRD_CENTILITRAGE = 6;
-    const CSV_CRD_CATEGORIE_KEY = 11;
-    const CSV_CRD_TYPE_KEY = 12;
-    const CSV_CRD_QUANTITE = 13;
-    const CSV_ANNEXE_TYPEANNEXE = 11;
-    const CSV_ANNEXE_TYPEMVT = 12;
-    const CSV_ANNEXE_QUANTITE = 13;
-    const CSV_ANNEXE_NONAPUREMENTDATEEMISSION = 14;
-    const CSV_ANNEXE_NONAPUREMENTACCISEDEST = 15;
-    const CSV_ANNEXE_NUMERODOCUMENT = 16;
-    const CSV_ANNEXE_OBSERVATION = 17;
+    const CSV_CRD_TYPE_DRM = 11;
+    const CSV_CRD_CATEGORIE_KEY = 12;
+    const CSV_CRD_TYPE_KEY = 13;
+    const CSV_CRD_QUANTITE = 14;
+    const CSV_ANNEXE_TYPE_DRM = 11;
+    const CSV_ANNEXE_TYPEANNEXE = 12;
+    const CSV_ANNEXE_TYPEMVT = 13;
+    const CSV_ANNEXE_QUANTITE = 14;
+    const CSV_ANNEXE_NONAPUREMENTDATEEMISSION = 15;
+    const CSV_ANNEXE_NONAPUREMENTACCISEDEST = 16;
+    const CSV_ANNEXE_NUMERODOCUMENT = 17;
+    const CSV_ANNEXE_OBSERVATION = 18;
 
     protected static $permitted_types = array(self::TYPE_CAVE,
         self::TYPE_CRD,
