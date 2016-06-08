@@ -11,7 +11,8 @@
         'formFavoris' => $formFavoris,
         'isTeledeclarationMode' => $isTeledeclarationMode,
         'detailsNodes' => $detailsNodes,
-        'detail' => $detail));
+        'detail' => $detail,
+        'saisieSuspendu' => $saisieSuspendu));
     ?>
         <div id="col_saisies" class="col-xs-8 well" style="overflow-x: auto; position: relative;" >
 
@@ -35,7 +36,8 @@
                     'numProduit' => $cpt,
                     'form' => $form,
                     'favoris' => $favoris,
-                    'isTeledeclarationMode' => $isTeledeclarationMode));
+                    'isTeledeclarationMode' => $isTeledeclarationMode,
+                    'saisieSuspendu' => $saisieSuspendu));
                 $cpt++;
                 ?>
                 <?php $first = $first && !$produit->hasMovements(); ?>

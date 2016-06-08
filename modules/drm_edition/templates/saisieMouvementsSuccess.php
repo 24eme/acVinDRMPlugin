@@ -23,7 +23,8 @@
                     'form' => $form,
                     'favoris' => $favoris,
                     'isTeledeclarationMode' => $isTeledeclarationMode,
-                    'detailsNodes' => $detailsNodes));
+                    'detailsNodes' => $detailsNodes,
+                  'saisieSuspendu' => $saisieSuspendu));
                 ?>
             </div>
 
