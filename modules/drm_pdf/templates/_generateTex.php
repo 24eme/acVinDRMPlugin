@@ -46,8 +46,9 @@
 \begin{document}
 
 <?php foreach (DRMClient::$correspondance_types as $libelle => $typeDetailsNodes) : ?>
-  <?php include_partial('drm_pdf/generateRecapMvtTex', array('drm' => $drm,'drmLatex' => $drmLatex, 'detailsNodes' => $typeDetailsNodes, "libelleDetail" => $libelle)); ?>
+  <?php include_partial('drm_pdf/generateRecapMvtTex', array('drm' => $drm,'drmLatex' => $drmLatex, 'detailsNodes' => $typeDetailsNodes, "libelleDetail" => $libelle,'aggregateAppellation' => $aggregateAppellation,)); ?>
 <?php endforeach; ?>
 <?php include_partial('drm_pdf/generateCRDTex', array('drm' => $drm)); ?>
 <?php include_partial('drm_pdf/generateDroitsDouaneTex', array('drm' => $drm)); ?>
+
 \end{document}
