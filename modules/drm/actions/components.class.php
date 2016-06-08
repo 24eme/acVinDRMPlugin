@@ -125,9 +125,9 @@ class drmComponents extends sfComponents {
         if (!$this->calendrier)
             $this->calendrier = new DRMCalendrier($this->etablissement, $this->campagne, $this->isTeledeclarationMode);
             $this->lastDrmToCompleteAndToStart = $this->calendrier->getLastDrmToCompleteAndToStart();
-        if ($this->isTeledeclarationMode) {
+        //if ($this->isTeledeclarationMode) {
             $this->creationDrmsForms = $this->getCreationDrmsForms();
-        }
+        //}
     }
 
     public function executeStocks() {
@@ -201,7 +201,7 @@ class drmComponents extends sfComponents {
                 $this->recaps[$rev->produit_hash]['volume_revendique_drev'] += $rev->volume;
             }
         } catch (Exception $e) {
-            
+
         }
 
         $dss = DSStocksView::getInstance()->findByCampagneAndEtablissement($this->campagne, null, $this->etablissement->identifiant);

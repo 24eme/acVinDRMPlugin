@@ -145,7 +145,7 @@ class DRMImportCsvEdi extends DRMCsvEdi {
     }
 
     private function importMouvementsFromCSV($just_check = false) {
-        //$all_produits = $this->configuration->declaration->getProduitsAll();
+        $all_produits = $this->configuration->declaration->getProduitsAll();
 
         $num_ligne = 1;
         foreach ($this->getDocRows() as $csvRow) {
@@ -153,11 +153,12 @@ class DRMImportCsvEdi extends DRMCsvEdi {
                 $num_ligne++;
                 continue;
             }
-            //$csvLibelleProductArray = $this->buildLibellesArrayWithRow($csvRow, true);
+
+            $csvLibelleProductArray = $this->buildLibellesArrayWithRow($csvRow, true);
 
             $founded_produit = false;
 
-            /*foreach ($all_produits as $produit) {
+            foreach ($all_produits as $produit) {
                 if ($founded_produit) {
                     break;
                 }
@@ -166,7 +167,7 @@ class DRMImportCsvEdi extends DRMCsvEdi {
                     continue;
                 }
                 $founded_produit = $produit;
-            }*/
+            }
 
             if(!$founded_produit) {
                 $founded_produit = $this->configuration->identifyProductByLibelle(preg_replace("/[ ]+/", " ", sprintf("%s %s %s %s %s %s %s", $csvRow[self::CSV_CAVE_CERTIFICATION], $csvRow[self::CSV_CAVE_GENRE], $csvRow[self::CSV_CAVE_APPELLATION], $csvRow[self::CSV_CAVE_MENTION], $csvRow[self::CSV_CAVE_LIEU], $csvRow[self::CSV_CAVE_COULEUR], $csvRow[self::CSV_CAVE_CEPAGE])));
@@ -195,13 +196,15 @@ class DRMImportCsvEdi extends DRMCsvEdi {
             $confDetailMvt = $this->mouvements[$cat_mouvement][$type_mouvement];
 
             if (!$just_check) {
-                $drmDetails = $this->drm->addProduit($founded_produit->getHash(), $this->getDetailsKeyFromDRMType($drm_type));
+                $drmDetails = $this->drm->addProduit($founded_produit->getHash(), $this->getDetailsKeyFromDRMType("suspendu"));
 
                 $detailTotalVol = round(floatval($csvRow[self::CSV_CAVE_VOLUME]), 2);
                 $volume = round(floatval($csvRow[self::CSV_CAVE_VOLUME]), 2);
+
                 $cat_key = $confDetailMvt->getParent()->getKey();
                 $type_key = $confDetailMvt->getKey();
                 if($cat_key == "stocks_debut" && !$drmDetails->canSetStockDebutMois()) {
+
                     continue;
                 }
                 if ($confDetailMvt->hasDetails()) {
@@ -422,12 +425,12 @@ class DRMImportCsvEdi extends DRMCsvEdi {
     }
 
     private function getDetailsKeyFromDRMType($drmType) {
-        if($drmType == "SUSPENDU") {
+        if(KeyInflector::slugify($drmType) == "SUSPENDU") {
 
             return DRM::DETAILS_KEY_SUSPENDU;
         }
 
-        if($drmType == "ACQUITTE") {
+        if(KeyInflector::slugify($drmType) == "ACQUITTE") {
 
             return DRM::DETAILS_KEY_ACQUITTE;
         }
@@ -560,7 +563,7 @@ class DRMImportCsvEdi extends DRMCsvEdi {
     }
 
     private function buildAllMouvements() {
-        $all_conf_details = $this->configuration->declaration->getDetailConfiguration()->getAllDetails();
+        $all_conf_details = $this->configuration->declaration->details;
         $all_conf_details_slugified = array();
         foreach ($all_conf_details as $all_conf_detail_cat_Key => $all_conf_detail_cat) {
             foreach ($all_conf_detail_cat as $key_type => $type_detail) {
