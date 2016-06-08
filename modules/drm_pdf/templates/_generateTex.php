@@ -45,7 +45,7 @@
 <?php include_partial('drm_pdf/generateEnteteTex', array('drm' => $drm, 'nbPages' => $nbPages)); ?>
 \begin{document}
 
-<?php foreach (DRMClient::$correspondance_types as $libelle => $typeDetailsNodes) : ?>
+<?php foreach (DRMClient::$types_libelles as $typeDetailsNodes => $libelle) : ?>
   <?php include_partial('drm_pdf/generateRecapMvtTex', array('drm' => $drm,'drmLatex' => $drmLatex, 'detailsNodes' => $typeDetailsNodes, "libelleDetail" => $libelle)); ?>
 <?php endforeach; ?>
 <?php include_partial('drm_pdf/generateCRDTex', array('drm' => $drm)); ?>
