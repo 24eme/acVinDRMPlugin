@@ -5,15 +5,15 @@
       \end{large}
 \end{center}
 <?php
-$entete = '\begin{tabular}{C{20mm} p{48mm} |';
+$entete = '\begin{tabular}{C{68mm} |';
 $size_col = 30;
-$nb_appellations = count($produitsDetailsByCertifications->produitsByAppellation);
+$nb_appellations = count($produitsDetailsByCertifications->produitsByAppellation) ;
 
 foreach($produitsDetailsByCertifications->produitsByAppellation as $libelleAppellation => $produit){
   $entete .='C{' . $size_col . 'mm}|';
 }
 $entete .='}';
-$maxCol = 2 + count($produitsDetailsByCertifications->produitsByAppellation);
+$maxCol = 1 + count($produitsDetailsByCertifications->produitsByAppellation);
 ?>
     <?php
     /*
@@ -28,8 +28,8 @@ $maxCol = 2 + count($produitsDetailsByCertifications->produitsByAppellation);
      * Entête des Produits
      */
     ?>
-    \cline{3-<?php echo $maxCol; ?>}
-    & ~ &
+    \cline{2-<?php echo $maxCol; ?>}
+    &
     <?php
     $counter = 0;
       foreach($produitsDetailsByCertifications->produitsByAppellation as $libelleAppellation => $produit): ?>
@@ -45,7 +45,7 @@ $maxCol = 2 + count($produitsDetailsByCertifications->produitsByAppellation);
      */
     ?>
     \rowcolor{gray}
-    \multicolumn{2}{|c|}{ \small{\color{white}{\textbf{STOCK DÉBUT DE MOIS}} }} &
+    \multicolumn{1}{|c|}{ \small{\color{white}{\textbf{STOCK DÉBUT DE MOIS}} }} &
     <?php
       $counter = 0;
       foreach($produitsDetailsByCertifications->produitsByAppellation as $libelleAppellation => $produit): ?>
@@ -64,8 +64,6 @@ $maxCol = 2 + count($produitsDetailsByCertifications->produitsByAppellation);
         <?php $entreeKey = $entree->key; ?>
         <?php if (!$cpt_entree): ?>
             \multicolumn{1}{|c}{\multirow{<?php echo count($mvtsEnteesForPdf); ?>}{20mm}{\small{\textbf{ENTREES DU MOIS}}}} &
-        <?php else: ?>
-            \multicolumn{1}{|c}{~} &
         <?php endif; ?>
 
         \multicolumn{1}{|l|}{  \small{<?php echo $entree->libelle; ?>} } &
@@ -77,7 +75,7 @@ $counter=0;
         <?php endforeach; ?>
         \\
         <?php if ((count($mvtsEnteesForPdf) - 1) != $cpt_entree): ?>
-            \cline{2-<?php echo $maxCol; ?>}
+            \cline{1-<?php echo $maxCol; ?>}
         <?php endif; ?>
     <?php endforeach; ?>
     \hline
@@ -88,7 +86,7 @@ $counter=0;
      */
     ?>
     \rowcolor{lightgray}
-    \multicolumn{2}{|r|}{ \small{\textbf{TOTAL ENTREES}} } &
+    \multicolumn{1}{|r|}{ \small{\textbf{TOTAL ENTREES}} } &
     <?php
       $counter=0;
       foreach($produitsDetailsByCertifications->produitsByAppellation as $libelleAppellation => $produit):  ?>
@@ -107,8 +105,6 @@ $counter=0;
         <?php $sortieKey = $sortie->key; ?>
         <?php if (!$cpt_sortie): ?>
             \multicolumn{1}{|c}{\multirow{<?php echo count($mvtsSortiesForPdf); ?>}{20mm}{\small{\textbf{SORTIES DU MOIS}}}} &
-        <?php else: ?>
-            \multicolumn{1}{|c}{~} &
         <?php endif; ?>
 
         \multicolumn{1}{|l|}{  \small{<?php echo $sortie->libelle; ?>} } &
@@ -120,7 +116,7 @@ $counter=0;
         <?php endforeach; ?>
         \\
         <?php if ((count($mvtsSortiesForPdf) - 1) != $cpt_entree): ?>
-            \cline{2-<?php echo $maxCol; ?>}
+            \cline{1-<?php echo $maxCol; ?>}
         <?php endif; ?>
     <?php endforeach; ?>
     \hline
@@ -131,7 +127,7 @@ $counter=0;
      */
     ?>
     \rowcolor{lightgray}
-    \multicolumn{2}{|r|}{ \small{\textbf{TOTAL SORTIES}} } &
+    \multicolumn{1}{|r|}{ \small{\textbf{TOTAL SORTIES}} } &
   <?php
   $counter=0;
   foreach($produitsDetailsByCertifications->produitsByAppellation as $libelleAppellation => $produit):  ?>
@@ -147,7 +143,7 @@ $counter=0;
      */
     ?>
     \rowcolor{gray}
-    \multicolumn{2}{|c|}{ \small{\color{white}{\textbf{STOCK FIN DE MOIS}} }} &
+    \multicolumn{1}{|c|}{ \small{\color{white}{\textbf{STOCK FIN DE MOIS}} }} &
   <?php
   $counter=0;
   foreach($produitsDetailsByCertifications->produitsByAppellation as $libelleAppellation => $produit):  ?>
