@@ -6,6 +6,7 @@ use_helper('Mouvement');
 if (!isset($isTeledeclarationMode)) {
     $isTeledeclarationMode = false;
 }
+$hasDontRevendique = ConfigurationClient::getCurrent()->hasDontRevendique();
 ?>
 <?php if (count($mouvementsByProduit) > 0): ?>
     <?php if (isset($hamza_style)) : ?>
@@ -24,7 +25,9 @@ if (!isset($isTeledeclarationMode)) {
                 <th class="col-xs-4">Produits</th>
                 <th class="col-xs-3">Mouvement</th>
                 <th class="col-xs-2"><span class="pull-right">Volume</span></th>
-                <th class="col-xs-2"><span class="pull-left">(dont revendiqué)</span></th>
+                <?php if($hasDontRevendique): ?>
+                  <th class="col-xs-2"><span class="pull-left">(dont revendiqué)</span></th>
+                <?php endif; ?>
             </tr>
         </thead>
         <tbody>
@@ -40,7 +43,7 @@ if (!isset($isTeledeclarationMode)) {
                     <td><?php if($drm->version): ?><small class="text-muted"><?php echo $drm->version ?></small> <?php endif; ?><a href="#tab=mouvements_<?php echo $typeKey ?>&filtre=<?php echo strtolower($produit_libelle); ?>"><strong><?php echo $produit_libelle ?></strong></a></td>
                     <td><strong>Stock début</strong></td>
                     <td><strong> <span class="pull-right"><?php echoFloat($produit->total_debut_mois) . ' hl'; ?></span></strong></td>
-                    <td><strong> <span class="pull-left">(<?php echo ($detail->stocks_debut->dont_revendique) ? sprintFloat($detail->stocks_debut->dont_revendique) : "0.00"; ?>)</span></strong></td>
+                    <?php if($hasDontRevendique): ?><td><strong> <span class="pull-left">(<?php echo ($detail->stocks_debut->dont_revendique) ? sprintFloat($detail->stocks_debut->dont_revendique) : "0.00"; ?>)</span></strong></td><?php endif; ?>
                 </tr>
                 <?php endforeach ?>
                 <?php foreach ($mouvements as $mouvement): ?>
@@ -70,7 +73,7 @@ if (!isset($isTeledeclarationMode)) {
                     <td><?php if($drm->version): ?><small class="text-muted"><?php echo $drm->version ?></small> <?php endif; ?><a href="#tab=mouvements&filtre=<?php echo strtolower($produit_libelle); ?>"><strong><?php echo $produit_libelle ?></strong></a></td>
                     <td><strong>Stock fin</strong></td>
                     <td><strong><span class="pull-right"><?php echoFloat($produit->total) . ' hl'; ?></span></strong></td>
-                    <td><strong><span class="pull-left">(<?php echo ($detail->stocks_fin->dont_revendique) ? sprintFloat($detail->stocks_fin->dont_revendique) : "0.00"; ?>)</span></strong></td>
+                    <?php if($hasDontRevendique): ?><td><strong><span class="pull-left">(<?php echo ($detail->stocks_fin->dont_revendique) ? sprintFloat($detail->stocks_fin->dont_revendique) : "0.00"; ?>)</span></strong></td><?php endif; ?>
                 </tr>
                 <?php endforeach; ?>
 
