@@ -179,24 +179,26 @@ class DRMImportCsvEdi extends DRMCsvEdi {
                 continue;
             }
 
+            $type_douane_drm = KeyInflector::slugify($csvRow[self::CSV_CAVE_TYPE_DRM]);
+            $type_douane_drm_key = $this->getDetailsKeyFromDRMType($type_douane_drm);
             $type_drm = KeyInflector::slugify($csvRow[self::CSV_CAVE_TYPE_MOUVEMENT]);
             $cat_mouvement = KeyInflector::slugify($csvRow[self::CSV_CAVE_CATEGORIE_MOUVEMENT]);
             $type_mouvement = KeyInflector::slugify($csvRow[self::CSV_CAVE_TYPE_MOUVEMENT]);
 
-            if (!array_key_exists($cat_mouvement, $this->mouvements)) {
+            if (!array_key_exists($cat_mouvement, $this->mouvements[$type_douane_drm_key])) {
                 $this->csvDoc->addErreur($this->categorieMouvementNotFoundError($num_ligne, $csvRow));
                 $num_ligne++;
                 continue;
             }
-            if (!array_key_exists($type_mouvement, $this->mouvements[$cat_mouvement])) {
+            if (!array_key_exists($type_mouvement, $this->mouvements[$type_douane_drm_key][$cat_mouvement])) {
                 $this->csvDoc->addErreur($this->typeMouvementNotFoundError($num_ligne, $csvRow));
                 $num_ligne++;
                 continue;
             }
-            $confDetailMvt = $this->mouvements[$cat_mouvement][$type_mouvement];
+            $confDetailMvt = $this->mouvements[$type_douane_drm_key][$cat_mouvement][$type_mouvement];
 
             if (!$just_check) {
-                $drmDetails = $this->drm->addProduit($founded_produit->getHash(), $this->getDetailsKeyFromDRMType("suspendu"));
+                $drmDetails = $this->drm->addProduit($founded_produit->getHash(), $type_douane_drm_key);
 
                 $detailTotalVol = round(floatval($csvRow[self::CSV_CAVE_VOLUME]), 2);
                 $volume = round(floatval($csvRow[self::CSV_CAVE_VOLUME]), 2);
@@ -563,19 +565,21 @@ class DRMImportCsvEdi extends DRMCsvEdi {
     }
 
     private function buildAllMouvements() {
-        $all_conf_details = $this->configuration->declaration->details;
-        $all_conf_details_slugified = array();
-        foreach ($all_conf_details as $all_conf_detail_cat_Key => $all_conf_detail_cat) {
-            foreach ($all_conf_detail_cat as $key_type => $type_detail) {
-                if (!array_key_exists(KeyInflector::slugify($all_conf_detail_cat_Key), $all_conf_details_slugified)) {
-                    $all_conf_details_slugified[KeyInflector::slugify($all_conf_detail_cat_Key)] = array();
+        $all_conf_details_slugified = array("details" => array(), "detailsACQUITTE" => array());
+        foreach($this->configuration->declaration->filter('details') as $keyType => $all_conf_details) {
+            foreach ($all_conf_details as $all_conf_detail_cat_Key => $all_conf_detail_cat) {
+                foreach ($all_conf_detail_cat as $key_type => $type_detail) {
+                    if (!array_key_exists(KeyInflector::slugify($all_conf_detail_cat_Key), $all_conf_details_slugified[$keyType])) {
+                        $all_conf_details_slugified[$keyType][KeyInflector::slugify($all_conf_detail_cat_Key)] = array();
+                    }
+                    if (KeyInflector::slugify($key_type) == 'VRAC') {
+                        $all_conf_details_slugified[$keyType][KeyInflector::slugify($all_conf_detail_cat_Key)]['CONTRAT'] = $type_detail;
+                    }
+                    $all_conf_details_slugified[$keyType][KeyInflector::slugify($all_conf_detail_cat_Key)][KeyInflector::slugify($key_type)] = $type_detail;
                 }
-                if (KeyInflector::slugify($key_type) == 'VRAC') {
-                    $all_conf_details_slugified[KeyInflector::slugify($all_conf_detail_cat_Key)]['CONTRAT'] = $type_detail;
-                }
-                $all_conf_details_slugified[KeyInflector::slugify($all_conf_detail_cat_Key)][KeyInflector::slugify($key_type)] = $type_detail;
             }
         }
+
         return $all_conf_details_slugified;
     }
 
