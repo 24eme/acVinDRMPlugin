@@ -20,7 +20,7 @@ class drm_editionActions extends drmGeneriqueActions {
         $this->formFavoris = new DRMFavorisForm($this->drm,array('details' => $this->getRequest()->getParameter('details')));
         $this->formValidation = new DRMMouvementsValidationForm($this->drm, array('isTeledeclarationMode' => $this->isTeledeclarationMode));
         $this->detailsNodes = $this->config->get($drmdetailtype);
-
+        $this->saisieSuspendu = ($drmdetailtype == str_replace('SAISIE_','',DRMClient::ETAPE_SAISIE_SUSPENDU));
         if ($request->isMethod(sfRequest::POST)) {
             $this->formValidation->bind($request->getParameter($this->formValidation->getName()));
             if ($this->formValidation->isValid()) {

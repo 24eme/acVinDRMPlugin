@@ -63,9 +63,11 @@ $tabindex = $numProduit * 100 ;
                             <?php
                         endforeach;
                         ?>
+                        <?php if($saisieSuspendu): ?>
                         <li class="form-group form-group-xs groupe no_favoris" style="height: 21px;">
                             <a class="btn btn-default form-control raccourcis_ouvrir click-on-space-key text-center" style="border-color: #fff;" tabindex="<?php echo $tabindex ?>" data-groupe-id="3" ><span class="glyphicon glyphicon-chevron-down"></span></a>
                         </li>
+                      <?php  endif; ?>
                     </ul>
 
                     <div class="groupe p_gris" data-groupe-id="3">
@@ -141,10 +143,11 @@ $tabindex = $numProduit * 100 ;
                                 </li>
                             <?php endif; ?>
                         <?php endforeach; ?>
+                        <?php if($saisieSuspendu): ?>
                         <li class="form-group form-group-xs groupe no_favoris" style="height: 21px;">
                             <a class="btn btn-default form-control raccourcis_ouvrir click-on-space-key text-center" style="border-color: #fff" tabindex="<?php echo $tabindex ?>" data-groupe-id="5" ><span class="glyphicon glyphicon-chevron-down"></span></a>
                         </li>
-
+                        <?php endif; ?>
                     </ul>
 
                     <div class="groupe p_gris" data-groupe-id="5">
