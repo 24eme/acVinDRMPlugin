@@ -58,7 +58,7 @@
             <div class="col-xs-6 text-center">
                 <?php if (!$isTeledeclarationMode): ?>
                     <a href="<?php echo url_for('drm_etablissement', $drm->getEtablissement()); ?>" class="btn btn-default">Enregistrer en brouillon</a>
-<?php endif; ?>
+                <?php endif; ?>
                 <a class="btn btn-default" data-toggle="modal" data-target="#drm_delete_popup" >Supprimer la DRM</a>
             </div>
             <div class="col-xs-3 text-right">
