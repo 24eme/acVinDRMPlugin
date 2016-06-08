@@ -160,7 +160,9 @@ class DRMDetail extends BaseDRMDetail {
 
         $this->total_entrees_revendique = $this->getTotalByKey('entrees', 'revendique');
         $this->total_sorties_revendique = $this->getTotalByKey('sorties', 'revendique');
-        $this->stocks_fin->dont_revendique = $this->stocks_debut->dont_revendique + $this->total_entrees_revendique - $this->total_sorties_revendique;
+        if($this->getConfig()->getDocument()->hasDontRevendique()){
+          $this->stocks_fin->dont_revendique = $this->stocks_debut->dont_revendique + $this->total_entrees_revendique - $this->total_sorties_revendique;
+        }
         if ($this->entrees->exist('recolte')) {
             $this->total_recolte = $this->entrees->recolte;
         }
@@ -172,7 +174,9 @@ class DRMDetail extends BaseDRMDetail {
         $this->cvo->volume_taxable = $this->total_facturable;
 
         $this->total = $this->stocks_fin->final;
-        $this->total_revendique = $this->stocks_fin->dont_revendique;
+        if($this->getConfig()->getDocument()->hasDontRevendique()){
+          $this->total_revendique = $this->stocks_fin->dont_revendique;
+        }
     }
 
     protected function updateNoeud($hash, $coefficient_facturable) {

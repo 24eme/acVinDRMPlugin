@@ -106,7 +106,9 @@ class DRMDeclaration extends BaseDRMDeclaration {
             }else{
               $produit = $produitsDetailsForPdf[$detailsKey][$keyCertif]->produitsByAppellation[$produitDrm->getAppellation()->getLibelle()];
               $produit->stocks_debut->initial += $produitDrm->stocks_debut->initial;
-              $produit->stocks_debut->dont_revendique += $produitDrm->stocks_debut->dont_revendique;
+              if($this->getConfig()->getDocument()->hasDontRevendique()){
+                $produit->stocks_debut->dont_revendique += $produitDrm->stocks_debut->dont_revendique;
+              }
               $produit->total_debut_mois += $produitDrm->total_debut_mois;
 
               $produit->total_entrees += $produitDrm->total_entrees;
@@ -118,7 +120,9 @@ class DRMDeclaration extends BaseDRMDeclaration {
               $produit->total_revendique += $produitDrm->total_revendique;
 
               $produit->stocks_fin->final += $produitDrm->stocks_fin->final;
-              $produit->stocks_fin->dont_revendique += $produitDrm->stocks_fin->dont_revendique;
+              if($this->getConfig()->getDocument()->hasDontRevendique()){
+                $produit->stocks_fin->dont_revendique += $produitDrm->stocks_fin->dont_revendique;
+              }
 
               $produit->total += $produitDrm->total;
               foreach ($produitDrm->getEntrees() as $entreeKey => $entreeValue) {
