@@ -125,9 +125,9 @@ class drmComponents extends sfComponents {
         if (!$this->calendrier)
             $this->calendrier = new DRMCalendrier($this->etablissement, $this->campagne, $this->isTeledeclarationMode);
             $this->lastDrmToCompleteAndToStart = $this->calendrier->getLastDrmToCompleteAndToStart();
-        if ($this->isTeledeclarationMode) {
+        //if ($this->isTeledeclarationMode) {
             $this->creationDrmsForms = $this->getCreationDrmsForms();
-        }
+        //}
     }
 
     public function executeStocks() {
