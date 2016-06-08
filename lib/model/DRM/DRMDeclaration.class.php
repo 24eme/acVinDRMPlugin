@@ -97,15 +97,44 @@ class DRMDeclaration extends BaseDRMDeclaration {
         if(!array_key_exists($detailsKey,$produitsDetailsForPdf)){
           $produitsDetailsForPdf[$detailsKey] = array();
         }
+        $produitsByCertif->produitsByAppellation = array();
         $produitsDetailsForPdf[$detailsKey][$keyCertif] = $produitsByCertif;
-        $produits = array();
-        foreach ($produitsByCertif->produits as $hash => $produit) {
-        //  var_dump($hash); exit;
-          if(!$produit->hasStockEpuise()){
-            $produits[$hash] = $produit;
+        foreach ($produitsByCertif->produits as $hash => $produitDrm) {
+          if(!$produitDrm->hasStockEpuise()){
+            if(!array_key_exists($produitDrm->getAppellation()->getLibelle(),$produitsDetailsForPdf[$detailsKey][$keyCertif]->produitsByAppellation)){
+              $produitsDetailsForPdf[$detailsKey][$keyCertif]->produitsByAppellation[$produitDrm->getAppellation()->getLibelle()] = $produitDrm;
+            }else{
+              $produit = $produitsDetailsForPdf[$detailsKey][$keyCertif]->produitsByAppellation[$produitDrm->getAppellation()->getLibelle()];
+              $produit->stocks_debut->initial += $produitDrm->stocks_debut->initial;
+              $produit->stocks_debut->dont_revendique += $produitDrm->stocks_debut->dont_revendique;
+              $produit->total_debut_mois += $produitDrm->total_debut_mois;
+
+              $produit->total_entrees += $produitDrm->total_entrees;
+              $produit->total_entrees_revendique += $produitDrm->total_entrees_revendique;
+              $produit->total_recolte += $produitDrm->total_recolte;
+
+              $produit->total_sorties += $produitDrm->total_sorties;
+              $produit->total_facturable += $produitDrm->total_facturable;
+              $produit->total_revendique += $produitDrm->total_revendique;
+
+              $produit->stocks_fin->final += $produitDrm->stocks_fin->final;
+              $produit->stocks_fin->dont_revendique += $produitDrm->stocks_fin->dont_revendique;
+
+              $produit->total += $produitDrm->total;
+              foreach ($produitDrm->getEntrees() as $entreeKey => $entreeValue) {
+                $produit->entrees->$entreeKey += $produitDrm->entrees->$entreeKey;
+              }
+               foreach ($produitDrm->getSorties() as $sortieKey => $sortieValue) {
+                 if ($sortieValue) {
+                     if (!($sortieValue instanceof DRMESDetails)) {
+                        $produit->sorties->$sortieKey += $produitDrm->sorties->$sortieKey;
+                     }
+                 }
+               }
+              $produitsDetailsForPdf[$detailsKey][$keyCertif]->produitsByAppellation[$produit->getAppellation()->getLibelle()] = $produit;
+            }
           }
         }
-        $produitsDetailsForPdf[$detailsKey][$keyCertif]->produits = $produits;
       }
     }
 

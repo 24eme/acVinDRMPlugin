@@ -146,9 +146,7 @@ for ($index_page = 0; $index_page < $nb_pages; $index_page++):
         <?php endif; ?>
 
         \multicolumn{1}{|l|}{  \small{<?php echo $sortie->libelle; ?>} } &
-        <?php foreach ($produits_for_page as $counter => $produit):
-          if($sortieKey == "ventefrancedsa"){ continue; }
-           ?>
+        <?php foreach ($produits_for_page as $counter => $produit): ?>
             \multicolumn{1}{r|}{  \small{\color{black}{<?php echoFloatWithHl($produit->sorties->$sortieKey); ?>}}}
             <?php echo ($counter < count($produits_for_page) - 1) ? "&" : ''; ?>
         <?php endforeach; ?>

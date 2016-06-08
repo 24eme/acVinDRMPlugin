@@ -5,7 +5,6 @@ use_helper('Orthographe');
 use_helper('DRMPdf');
 use_helper('Display');
 
-$aggregateAppellation = false;
 
 $mvtsEnteesForPdf = $drmLatex->getMvtsEnteesForPdf($detailsNodes);
 $mvtsSortiesForPdf = $drmLatex->getMvtsSortiesForPdf($detailsNodes);
@@ -13,7 +12,7 @@ $mvtsSortiesForPdf = $drmLatex->getMvtsSortiesForPdf($detailsNodes);
 <?php foreach ($drm->declaration->getProduitsDetailsByCertificationsForPdf($aggregateAppellation,$detailsNodes) as $typeDrmProduit => $produitsDrmByCertifications): ?>
 <?php foreach ($produitsDrmByCertifications as $certification => $produitsDetailsByCertifications) : ?>
   <?php if($aggregateAppellation): ?>
-          <?php include_partial('drm_pdf/generateRecapMvtByAppellation', array('produitsDetailsByCertifications' => $produitsDetailsByCertifications,'mvtsEnteesForPdf' => $mvtsEnteesForPdf, 'mvtsSortiesForPdf' => $mvtsSortiesForPdf,"libelleDetail" => $libelleDetail)); ?>
+          <?php include_partial('drm_pdf/generateRecapMvtByAppellationTex', array('produitsDetailsByCertifications' => $produitsDetailsByCertifications,'mvtsEnteesForPdf' => $mvtsEnteesForPdf, 'mvtsSortiesForPdf' => $mvtsSortiesForPdf,"libelleDetail" => $libelleDetail)); ?>
   <?php else: ?>
           <?php include_partial('drm_pdf/generateRecapMvtByCepageTex', array('produitsDetailsByCertifications' => $produitsDetailsByCertifications,'mvtsEnteesForPdf' => $mvtsEnteesForPdf, 'mvtsSortiesForPdf' => $mvtsSortiesForPdf,"libelleDetail" => $libelleDetail)); ?>
   <?php endif; ?>

@@ -247,7 +247,7 @@ class DRMRouting {
             'control' => array('edition'),
         )));
 
-        $r->prependRoute('drm_pdf', new DRMRoute('/drm/:identifiant/pdf/:periode_version', array('module' => 'drm_pdf', 'action' => 'latex'), array('sf_method' => array('get', 'post')), array('model' => 'DRM', 'type' => 'object')
+        $r->prependRoute('drm_pdf', new DRMRoute('/drm/:identifiant/pdf/:periode_version/:appellation', array('module' => 'drm_pdf', 'action' => 'latex'), array('sf_method' => array('get', 'post')), array('model' => 'DRM', 'type' => 'object')
         ));
 
         $r->prependRoute('drm_debrayage', new EtablissementRoute('/drm/connexion/:identifiant', array('module' => 'drm',
