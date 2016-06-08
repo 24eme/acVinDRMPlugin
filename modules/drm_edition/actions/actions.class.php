@@ -4,8 +4,13 @@ class drm_editionActions extends drmGeneriqueActions {
 
     public function executeSaisieMouvements(sfWebRequest $request) {
         if(!($drmdetailtype = $this->getRequest()->getParameter('details'))) {
+            $this->drm = $this->getRoute()->getDRM();
 
-            return $this->redirect('drm_edition_details', array('sf_subject' => $this->getRoute()->getDRM(), 'details' =>  DRM::DETAILS_KEY_SUSPENDU));
+            if(!$this->drm->isDouaneType(DRMClient::TYPE_DRM_SUSPENDU) && $this->drm->isDouaneType(DRMClient::TYPE_DRM_ACQUITTE)) {
+                return $this->redirect('drm_edition_details', array('sf_subject' => $this->drm, 'details' =>  DRM::DETAILS_KEY_ACQUITTE));
+            }
+
+            return $this->redirect('drm_edition_details', array('sf_subject' => $this->drm, 'details' =>  DRM::DETAILS_KEY_SUSPENDU));
         }
         $this->isTeledeclarationMode = $this->isTeledeclarationDrm();
         $this->init();
@@ -20,7 +25,7 @@ class drm_editionActions extends drmGeneriqueActions {
             $this->formValidation->bind($request->getParameter($this->formValidation->getName()));
             if ($this->formValidation->isValid()) {
                 $this->formValidation->save();
-                if($this->detailsKey == DRM::DETAILS_KEY_SUSPENDU) {
+                if($this->detailsKey == DRM::DETAILS_KEY_SUSPENDU && $this->drm->isDouaneType(DRMClient::TYPE_DRM_ACQUITTE)) {
                     $this->redirect('drm_edition_details', array('sf_subject' => $this->drm, 'details' =>  DRM::DETAILS_KEY_ACQUITTE));
                 }
                 if ($this->isTeledeclarationMode) {

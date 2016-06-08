@@ -202,6 +202,28 @@ abstract class _DRMTotal extends acCouchdbDocumentTree {
         return $produits;
     }
 
+    public function reorderByConf() {
+        $children = array();
+
+        foreach($this->getChildrenNode() as $child) {
+            $children[$child->getKey()] = $child->getData();
+        }
+
+        foreach($children as $key => $child) {
+            $this->getChildrenNode()->remove($key);
+        }
+
+        foreach($this->getConfig()->getChildrenNode() as $child) {
+            if(!array_key_exists($child->getKey(), $children)) {
+                continue;
+            }
+
+            $child_added = $this->getChildrenNode()->add($child->getKey(), $children[$child->getKey()]);
+            $child_added->reorderByConf();
+        }
+
+    }
+
     public function getProduitsDetails($teledeclarationMode = false, $detailsKey = null) {
         $produits = array();
         foreach($this->getChildrenNode() as $key => $item) {
@@ -214,7 +236,7 @@ abstract class _DRMTotal extends acCouchdbDocumentTree {
     public function getProduitsDetailsSorted($teledeclarationMode = false, $detailsKey = null) {
         $produits = $this->getProduitsDetails($teledeclarationMode, $detailsKey);
 
-        uasort($produits, "_DRMTotal::sortProduitByLibelle");
+        //uasort($produits, "_DRMTotal::sortProduitByLibelle");
 
         return $produits;
     }

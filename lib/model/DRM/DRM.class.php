@@ -115,6 +115,7 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
         $detail = $this->getOrAdd($hash)->addDetailsNoeud($detailsKey)->addProduit($labels);
         $detail->produit_libelle = $detail->getLibelle($format = "%format_libelle% %la%");
 
+        $this->declaration->reorderByConf();
         return $detail;
     }
 
@@ -136,6 +137,23 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
         return $this->declaration->getConfigProduits($teledeclarationMode);
     }
 
+    public function isDouaneType($douaneType) {
+        $keyNeeded = self::DETAILS_KEY_SUSPENDU;
+
+        if($douaneType == DRMClient::TYPE_DRM_ACQUITTE) {
+            $keyNeeded = self::DETAILS_KEY_ACQUITTE;
+        }
+
+        foreach($this->getProduits() as $produit) {
+            if($produit->exist($keyNeeded) && count($produit->get($keyNeeded)) > 0) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getConfigProduitsAuto() {
 
         return $this->declaration->getConfigProduitsAuto();
@@ -143,16 +161,6 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
 
     public function getProduits() {
         return $this->declaration->getProduits();
-    }
-
-    public function getProduitsWithCorrespondance($conf = null) {
-
-        $hashesInversed = $conf->getCorrespondancesInverse();
-        foreach ($this->getProduits() as $hash => $produit) {
-            var_dump($hash);
-        }
-        exit;
-        return $this->declaration->getProduitsWithCorrespondance();
     }
 
     public function getProduitsDetails($teledeclarationMode = false, $detailsKey = null) {
