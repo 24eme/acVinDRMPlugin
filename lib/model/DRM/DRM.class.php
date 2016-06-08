@@ -47,6 +47,17 @@ class DRM extends BaseDRM implements InterfaceMouvementDocument, InterfaceVersio
     	}
     }
 
+    public function initLies(){
+      $produits = $this->getConfigProduits(true);
+    	if (!is_null($produits)) {
+    		foreach ($produits as $hash => $produit) {
+          if(preg_match("/USAGESINDUSTRIELS/",$hash)){
+            $this->addProduit($hash, DRM::DETAILS_KEY_SUSPENDU);
+          }
+    		}
+    	}
+    }
+
     public function constructId() {
 
         $this->set('_id', DRMClient::getInstance()->buildId($this->identifiant, $this->periode, $this->version));
