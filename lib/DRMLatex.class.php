@@ -15,13 +15,14 @@ class DRMLatex extends GenericLatex {
 
     private $drm = null;
     private $libelles_detail_ligne = null;
-
+    private $aggregateAppellation = false;
     const VRAC_OUTPUT_TYPE_PDF = 'pdf';
     const VRAC_OUTPUT_TYPE_LATEX = 'latex';
     const NB_PRODUITS_PER_PAGE = 6;
 
     function __construct(DRM $drm, $config = null) {
         sfProjectConfiguration::getActive()->loadHelpers("Partial", "Url", "MyHelper");
+        $this->aggregateAppellation = $config['aggregateAppellation'];
         $this->drm = $drm;
         $this->libelles_detail_ligne = $drm->allLibelleDetailLigneForDRM();
     }
@@ -50,25 +51,26 @@ class DRMLatex extends GenericLatex {
     }
 
     public function getLatexFileNameWithoutExtention() {
-        return $this->getTEXWorkingDir() . $this->drm->_id . '_' . $this->drm->_rev;
+        return $this->getTEXWorkingDir() . $this->drm->_id . '_' . $this->drm->_rev.'_'.$this->aggregateAppellation;
     }
 
     public function getLatexFileContents() {
         return html_entity_decode(htmlspecialchars_decode(
                         get_partial('drm_pdf/generateTex', array('drm' => $this->drm,
+'aggregateAppellation' => $this->aggregateAppellation,
             'nbPages' => $this->getNbPages(),
             'drmLatex' => $this))
                         , HTML_ENTITIES));
     }
 
     public function getPublicFileName($extention = '.pdf') {
-        return 'drm_' . $this->drm->_id . '_' . $this->drm->_rev . $extention;
+        return 'drm_' . $this->drm->_id . '_' . $this->drm->_rev.'_'.$this->aggregateAppellation . $extention;
     }
 
-    public function getMvtsEnteesForPdf() {
+    public function getMvtsEnteesForPdf($detailNode = 'details') {
         $entrees = array();
-        foreach ($this->libelles_detail_ligne->entrees as $key => $entree) {
-       
+        foreach ($this->libelles_detail_ligne->get($detailNode)->entrees as $key => $entree) {
+
             $entreeObj = new stdClass();
             $entreeObj->libelle = $entree->libelle;
             $entreeObj->key = $key;
@@ -78,9 +80,9 @@ class DRMLatex extends GenericLatex {
         return $entrees;
     }
 
-    public function getMvtsSortiesForPdf() {
+    public function getMvtsSortiesForPdf($detailNode = 'details') {
         $sorties = array();
-        foreach ($this->libelles_detail_ligne->sorties as $key => $sortie) {
+        foreach ($this->libelles_detail_ligne->get($detailNode)->sorties as $key => $sortie) {
             $sortieObj = new stdClass();
             $sortieObj->libelle = $sortie->libelle;
             $sortieObj->key = $key;
